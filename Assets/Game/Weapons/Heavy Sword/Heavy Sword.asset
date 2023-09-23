@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75852014e47af2d4ebeb0a2bbbf1574f, type: 3}
+  m_Name: Heavy Sword
+  m_EditorClassIdentifier: 
+  animatorOverride: {fileID: 22100000, guid: 26be6ba9c5ebc5f41b81ca0699636044, type: 2}
+  equippedWeaponPrefab: {fileID: 123501736823044884, guid: ebe9d62d0185bad4998806b9f45ab177, type: 3}
+  combo:
+  - animationName: Big Sword Attack 1
+    timeToContinue: 0.6
+    damagePercentageBonus: 0
+    attackForce: 3
+    applyForceTime: 0.1
+  - animationName: Big Sword Attack 2
+    timeToContinue: 0.6
+    damagePercentageBonus: 0.2
+    attackForce: 3
+    applyForceTime: 0.1
+  - animationName: Big Sword Attack 3
+    timeToContinue: 0.6
+    damagePercentageBonus: 0.3
+    attackForce: 3
+    applyForceTime: 0.1
+  - animationName: Big Sword Attack 15
+    timeToContinue: 0.6
+    damagePercentageBonus: 0.4
+    attackForce: 5
+    applyForceTime: 0.2
+  isRightHanded: 1
+  baseDamage: 50

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75852014e47af2d4ebeb0a2bbbf1574f, type: 3}
+  m_Name: Katana
+  m_EditorClassIdentifier: 
+  animatorOverride: {fileID: 22100000, guid: 4311e1c46e8783b44bcbee1d33d3055e, type: 2}
+  equippedWeaponPrefab: {fileID: 6823638271258214933, guid: 5ce5f8f9f96603949b00b8bfce5490e1, type: 3}
+  combo:
+  - animationName: Katana Attack 5
+    timeToContinue: 0.6
+    damagePercentageBonus: 0
+  - animationName: Katana Attack 6
+    timeToContinue: 0.6
+    damagePercentageBonus: 0.3
+  - animationName: Katana Attack 9
+    timeToContinue: 0.6
+    damagePercentageBonus: 0.5
+  isRightHanded: 1
+  damage: 10
