@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 797516524569544856}
-  - component: {fileID: 4666619501750245955}
+  - component: {fileID: 2033194223896648077}
   m_Layer: 0
-  m_Name: Health Change Spawner
+  m_Name: Health Text Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4666619501750245955
+--- !u!114 &2033194223896648077
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0560311e6df5d5d4095e1189255547f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthChangePrefab: {fileID: 3928253926678321237, guid: bfa3287448b69de4e917a4d732a4afda, type: 3}
+  healthTextPrefab: {fileID: 349911026017148106, guid: bfa3287448b69de4e917a4d732a4afda, type: 3}

@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1049894004526779478}
   - component: {fileID: 388934211668612567}
-  - component: {fileID: 3928253926678321237}
   - component: {fileID: 6440091757192747646}
+  - component: {fileID: 349911026017148106}
   m_Layer: 0
-  m_Name: Health Change Prefab
+  m_Name: Health Text Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,19 +51,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &3928253926678321237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9037191485960979027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 551b60ae7e445bf46b1a08c7f92a11c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageText: {fileID: 552601505530397646}
 --- !u!114 &6440091757192747646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +63,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886557cb8072d91488e1ba2a1f6fa464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &349911026017148106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9037191485960979027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551b60ae7e445bf46b1a08c7f92a11c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthText: {fileID: 552601505530397646}
 --- !u!1 &9063013327662033608
 GameObject:
   m_ObjectHideFlags: 0

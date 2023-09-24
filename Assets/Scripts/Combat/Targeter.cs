@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
@@ -7,8 +6,8 @@ namespace CombatSystem.Combat
     public class Targeter : MonoBehaviour
     {
         [SerializeField] CinemachineTargetGroup cinemachineTargetGroup;
-        List<CombatTarget> targets = new List<CombatTarget>();
-        [SerializeField] CombatTarget currentTarget;
+        [SerializeField] float checkRadius = 10;
+        CombatTarget currentTarget;
         Camera mainCamera;
         const float targetGroupWeight = 1;
         const float targetGroupRadius = 2;
@@ -20,11 +19,6 @@ namespace CombatSystem.Combat
 
         public bool SelectTarget()
         {
-            if(targets.Count == 0)
-            {
-                return false;
-            }
-
             CombatTarget closestTarget = GetClosestTarget();
 
             if(closestTarget == null)
@@ -34,7 +28,7 @@ namespace CombatSystem.Combat
 
             currentTarget = closestTarget;
 
-            if(!targets.Contains(closestTarget))
+            if(cinemachineTargetGroup.FindMember(currentTarget.transform) == -1)
             {
                 cinemachineTargetGroup.AddMember(currentTarget.transform, targetGroupWeight, targetGroupRadius);
             }
@@ -53,54 +47,21 @@ namespace CombatSystem.Combat
             currentTarget = null;
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            CombatTarget target = other.GetComponent<CombatTarget>();
-
-            if(target != null) 
-            {
-                AddTarget(target);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            CombatTarget target = other.GetComponent<CombatTarget>();
-
-             if(target != null) 
-            {
-                RemoveTarget(target);
-            }
-        }
-
-        private void Start()
-        {
-            mainCamera = Camera.main;
-        }
-
-        private void AddTarget(CombatTarget target)
-        {
-            targets.Add(target);
-        }
-
-        private void RemoveTarget(CombatTarget target)
-        {
-            if(currentTarget == target)
-            {
-                cinemachineTargetGroup.RemoveMember(currentTarget.transform);
-                currentTarget = null;
-            }
-
-            targets.Remove(target);
-        }
-
         private CombatTarget GetClosestTarget()
         {
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, checkRadius, Vector3.up, 0);
             CombatTarget closestTarget = null;
             float closestTargetDistance = Mathf.Infinity;
 
-            foreach(var target in targets)
+            foreach(var hit in hits)
             {
+                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+
+                if(target == null) 
+                {
+                    continue;
+                }
+                
                 Vector2 viewDirection = mainCamera.WorldToViewportPoint(target.transform.position);
                 Renderer renderer = target.GetComponentInChildren<Renderer>();
 
@@ -121,6 +82,17 @@ namespace CombatSystem.Combat
             }
 
             return closestTarget;
+        }
+
+        private void Start()
+        {
+            mainCamera = Camera.main;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, checkRadius);
         }
     }
 }

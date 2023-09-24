@@ -40,7 +40,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7100259232919373418}
-  - component: {fileID: 3302567156301529786}
   - component: {fileID: 8785894529861261404}
   m_Layer: 0
   m_Name: Targeter
@@ -64,19 +63,6 @@ Transform:
   m_Father: {fileID: 5876143767702692422}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3302567156301529786
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8962408305402046013}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 10
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8785894529861261404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,7 +75,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dcaeb808bf2a14491056b5b46abdde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targets: []
+  cinemachineTargetGroup: {fileID: 0}
+  checkRadius: 10
 --- !u!1001 &208773426834705209
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ namespace CombatSystem.Combat
         [SerializeField] Transform rightHand;
         [SerializeField] Transform leftHand;
         Weapon currentWeapon;
+        Animator animator;
         int currentAttackIndex = 0;
 
         public void EquipWeapon()
@@ -35,10 +36,32 @@ namespace CombatSystem.Combat
             currentAttackIndex = 0;
         }
 
+        public float GetAttackNormalizedTime()
+        {
+            var currentInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            if(!animator.IsInTransition(0) && currentInfo.IsTag("Attack"))
+            {
+                return currentInfo.normalizedTime;
+            }
+
+            return 0;
+        }
+
+        public void ResetNormalizedTime(float resetValue)
+        {
+            animator.Play(0, 0, resetValue);
+        }
+
         // Animation Event
         public void Hit()
         {   
             currentWeapon.OnHit(gameObject, weaponConfig, GetCurrentAttack());
+        }
+
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
         }
 
         private void Start()

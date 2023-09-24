@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace CombatSystem.UI
 {
-    public class HealthChangeUI : MonoBehaviour
+    public class HealthText : MonoBehaviour
     {
-        [SerializeField] TMP_Text damageText;
+        [SerializeField] TMP_Text healthText;
 
         public void Destroy()
         {
@@ -14,7 +14,7 @@ namespace CombatSystem.UI
 
         public void SetValue(float amount)
         {
-            damageText.text = $"{amount}";
+            healthText.text = $"{amount}";
         }
     }   
 }
