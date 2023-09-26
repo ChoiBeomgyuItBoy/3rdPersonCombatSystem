@@ -1,36 +1,87 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CombatSystem.StateMachine
 {
-    public abstract class StateCondition : ScriptableObject
-    {
-        protected StateController controller;
-        bool started = false;
+    [System.Serializable]
+    public class StateCondition
+    {   
+        [SerializeField] List<Disjunction> and = new List<Disjunction>();
+
+        public bool Check(StateController controller, State caller)
+        {
+            if(and.Count == 0) return false;
+
+            foreach(var disjunction in and)
+            {
+                if(!disjunction.Check(controller, caller))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         public StateCondition Clone()
         {
-            return Instantiate(this);
+            StateCondition clone = new StateCondition();
+            clone.and = and.ConvertAll((disjunction) => disjunction.Clone());
+            return clone;
         }
 
-        public bool Check(StateController controller, State state)
+        [System.Serializable]
+        class Disjunction
         {
-            if(this.controller == null)
+            [SerializeField] List<Predicate> or = new List<Predicate>();
+
+            public bool Check(StateController controller, State caller)
             {
-                this.controller = controller;
+                foreach(var predicate in or)
+                {
+                    if(predicate.Check(controller, caller))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
 
-            if(!started)
+            public Disjunction Clone()
             {
-                OnEnter();
-                started = true;
-                state.onExit += OnExit;
+                Disjunction clone = new Disjunction();
+                clone.or = or.ConvertAll((predicate) => predicate.Clone());
+                return clone;
             }
 
-            return OnCheck();
         }
 
-        protected abstract void OnEnter();
-        protected abstract bool OnCheck();
-        protected abstract void OnExit();
-    }
+        [System.Serializable]
+        class Predicate
+        {
+            [SerializeField] StatePredicate predicate;
+            [SerializeField] bool negate = false;
+
+            public bool Check(StateController controller, State caller)
+            {
+                bool result = predicate.Check(controller, caller);
+
+                if(result == negate)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public Predicate Clone()
+            {
+                Predicate clone = new Predicate();
+                clone.predicate = predicate.Clone();
+                clone.negate = negate;
+                return clone;
+            }
+        }
+    }   
 }

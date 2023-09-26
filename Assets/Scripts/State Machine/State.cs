@@ -9,22 +9,20 @@ namespace CombatSystem.StateMachine
     {
         [SerializeField] List<StateAction> actions = new List<StateAction>();
         [SerializeField] List<StateTransition> transitions = new List<StateTransition>();
-        public event Action onExit;
-
-        public State Clone()
-        {
-            State clone = Instantiate(this);
-
-            clone.actions = actions.ConvertAll((action) => action.Clone());
-            clone.transitions = transitions.ConvertAll((transition) => transition.Clone());
-
-            return clone;
-        }
+        public event Action<State> onExit;
 
         public void Tick(StateController controller)
         {
             DoActions(controller);
             CheckConditions(controller);
+        }
+
+        public State Clone()
+        {
+            State clone = Instantiate(this);
+            clone.actions = actions.ConvertAll((action) => action.Clone());
+            clone.transitions = transitions.ConvertAll((transition) => transition.Clone());
+            return clone;
         }
 
         private void DoActions(StateController controller)
@@ -41,7 +39,7 @@ namespace CombatSystem.StateMachine
             {
                 if(transition.Check(controller, this))
                 {
-                    onExit?.Invoke();
+                    onExit?.Invoke(this);
                     controller.SwitchState(transition.GetTrueState());
                     return;
                 }

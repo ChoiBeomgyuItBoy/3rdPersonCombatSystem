@@ -17,6 +17,8 @@ namespace CombatSystem.StateMachine.Actions
             fighter = controller.GetComponent<Fighter>();
             currentAttack = fighter.GetCurrentAttack();
             forceReceiver = controller.GetComponent<ForceReceiver>();
+
+            alreadyAppliedForce = false;
         }
 
         protected override void OnTick()

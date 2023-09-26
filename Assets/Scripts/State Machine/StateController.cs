@@ -4,22 +4,22 @@ namespace CombatSystem.StateMachine
 {
     public class StateController : MonoBehaviour
     {
-        [SerializeField] State initalState;
-        [SerializeField] State currentState;
+        [SerializeField] StateMachine stateMachine;
 
         public void SwitchState(State newState)
         {
-            currentState = newState.Clone();
+            stateMachine.SwitchState(newState);
         }
 
         private void Start()
         {
-            SwitchState(initalState);
+            stateMachine = stateMachine.Clone();
+            stateMachine.Enter();
         }
 
         private void Update()
         {
-            currentState?.Tick(this);
+            stateMachine.Tick(this);
         }
     }
 }

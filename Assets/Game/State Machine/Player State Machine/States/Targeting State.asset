@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
+  m_Name: Targeting State
+  m_EditorClassIdentifier: 
+  actions:
+  - {fileID: 11400000, guid: 931dde923e602784a840f4f452eae308, type: 2}
+  - {fileID: 11400000, guid: 15e6b42887955094685b8ce9919a1324, type: 2}
+  - {fileID: 11400000, guid: 625fb7235765aa94988f0d10d36464db, type: 2}
+  - {fileID: 11400000, guid: 80585179f5ae22941a052dc94a8ddac3, type: 2}
+  transitions:
+  - condition:
+      and:
+      - or:
+        - predicate: {fileID: 11400000, guid: 41b79aa9ddbb62a48922509941caecfc, type: 2}
+          negate: 0
+        - predicate: {fileID: 11400000, guid: 6539e6b8af0e50148967a9c9c43faac2, type: 2}
+          negate: 1
+    trueState: {fileID: 11400000, guid: da7aa0a085d3621429195cee3ce50ade, type: 2}
+  - condition:
+      and:
+      - or:
+        - predicate: {fileID: 11400000, guid: 8e0c363327a1bfd498f639acba4486d2, type: 2}
+          negate: 0
+    trueState: {fileID: 11400000, guid: 1d9797e2a5dccf34e8b3553551ef4713, type: 2}

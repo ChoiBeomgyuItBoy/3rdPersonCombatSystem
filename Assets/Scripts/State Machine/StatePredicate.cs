@@ -1,18 +1,19 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace CombatSystem.StateMachine
 {
-    public abstract class StateAction : ScriptableObject
+    public abstract class StatePredicate : ScriptableObject
     {
         protected StateController controller;
         bool started = false;
 
-        public StateAction Clone()
+        public StatePredicate Clone()
         {
             return Instantiate(this);
         }
 
-        public void Tick(StateController controller, State caller)
+        public bool Check(StateController controller, State caller)
         {
             if(this.controller == null)
             {
@@ -24,7 +25,7 @@ namespace CombatSystem.StateMachine
                 Enter(caller);
             }
 
-            OnTick();
+            return OnCheck();
         }
 
         private void Enter(State caller)
@@ -42,7 +43,7 @@ namespace CombatSystem.StateMachine
         }
 
         protected abstract void OnEnter();
-        protected abstract void OnTick();
+        protected abstract bool OnCheck();
         protected abstract void OnExit();
     }
 }

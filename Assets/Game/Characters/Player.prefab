@@ -144,7 +144,11 @@ PrefabInstance:
     - target: {fileID: 6353486647324538172, guid: 39376419b4de88b4c9e78afab603913e, type: 3}
       propertyPath: initalState
       value: 
-      objectReference: {fileID: 11400000, guid: 22c928a1e21808442b9d3a7e67309b71, type: 2}
+      objectReference: {fileID: 11400000, guid: da7aa0a085d3621429195cee3ce50ade, type: 2}
+    - target: {fileID: 6353486647324538172, guid: 39376419b4de88b4c9e78afab603913e, type: 3}
+      propertyPath: stateMachine
+      value: 
+      objectReference: {fileID: 11400000, guid: fc1dd57b3a651ce4f98d7c9e15f0af8c, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6010607637443209599, guid: 39376419b4de88b4c9e78afab603913e, type: 3}
