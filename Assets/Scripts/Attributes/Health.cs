@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +10,11 @@ namespace CombatSystem.Attributes
         [SerializeField] float currentHealth;
         public UnityEvent<float> onDamageTaken;
         public UnityEvent onDie;
+
+        public bool IsDead()
+        {
+            return currentHealth == 0;
+        }
 
         public void TakeDamage(float damage)
         {

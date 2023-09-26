@@ -7,11 +7,20 @@ namespace CombatSystem.StateMachine.Actions
     {
         [SerializeField] string animationName = "";
         [SerializeField] float transitionDuration = 0.1f;
+        [SerializeField] bool inFixedTime = false;
 
         protected override void OnEnter()
         {
             Animator animator = controller.GetComponent<Animator>();
-            animator.CrossFadeInFixedTime(animationName, transitionDuration);
+
+            if(inFixedTime)
+            {
+                animator.CrossFadeInFixedTime(animationName, transitionDuration);
+            }
+            else
+            {
+                animator.CrossFade(animationName, transitionDuration);
+            }
         }
 
         protected override void OnTick() { }

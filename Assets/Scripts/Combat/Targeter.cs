@@ -64,6 +64,11 @@ namespace CombatSystem.Combat
                 {
                     continue;
                 }
+
+                if(target.GetComponent<Health>().IsDead())
+                {
+                    continue;
+                }
                 
                 Vector2 viewDirection = mainCamera.WorldToViewportPoint(target.transform.position);
                 Renderer renderer = target.GetComponentInChildren<Renderer>();
