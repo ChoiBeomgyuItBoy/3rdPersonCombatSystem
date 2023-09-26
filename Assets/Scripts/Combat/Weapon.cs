@@ -43,7 +43,8 @@ namespace CombatSystem.Combat
             Vector3 userPosition = user.transform.position;
             Vector3 targetPosition = target.transform.position;
             Vector3 forceDirection = (targetPosition - userPosition).normalized;
-            return forceDirection * currentAttack.GetKnockback();
+            forceDirection.y = currentAttack.GetUpKnockback();
+            return forceDirection * currentAttack.GetForwardKnockback();
         }
 
         private void OnDrawGizmosSelected()

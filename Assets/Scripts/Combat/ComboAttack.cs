@@ -8,7 +8,8 @@ namespace CombatSystem.Combat
     {
         [SerializeField] string animationName = "";
         [SerializeField] float attackForce = 1;
-        [SerializeField] float knockback  = 3;
+        [SerializeField] float forwardKnockback = 3;
+        [SerializeField] float upKnockback = 3;
         [SerializeField] [Range(0,1)] float damagePercentageBonus = 0.2f;
         [SerializeField] [Range(0,0.9f)] float applyForceTime = 0.6f;
         [SerializeField] [Range(0,0.9f)] float timeToContinue = 0.6f;
@@ -38,9 +39,14 @@ namespace CombatSystem.Combat
             return applyForceTime;
         }
 
-        public float GetKnockback()
+        public float GetForwardKnockback()
         {
-            return knockback;
+            return forwardKnockback;
+        }
+
+        public float GetUpKnockback()
+        {
+            return upKnockback;
         }
     }
 }
