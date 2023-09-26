@@ -8,6 +8,7 @@ namespace CombatSystem.Attributes
         [SerializeField] float maxHealth = 100;
         [SerializeField] float currentHealth;
         public UnityEvent<float> onHealthChange;
+        public UnityEvent onDie;
 
         public void ChangeHealth(float healthChange)
         {
@@ -18,6 +19,11 @@ namespace CombatSystem.Attributes
 
             currentHealth = Mathf.Max(0, currentHealth + healthChange);
             onHealthChange?.Invoke(healthChange);
+
+            if(currentHealth == 0)
+            {
+                onDie?.Invoke();
+            }
         }
 
         public float GetHealthFraction()

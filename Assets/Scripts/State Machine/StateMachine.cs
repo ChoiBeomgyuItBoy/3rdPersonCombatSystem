@@ -8,6 +8,7 @@ namespace CombatSystem.StateMachine
     {
         [SerializeField] State initialState;
         [SerializeField] State currentState;
+        [SerializeField] AnyState anyState;
         [SerializeField] List<State> states = new List<State>();
         Dictionary<State, State> cloneLookup = new Dictionary<State, State>();
 
@@ -16,8 +17,13 @@ namespace CombatSystem.StateMachine
             currentState = cloneLookup[newState];
         }
 
-        public void Enter()
+        public void Enter(StateController controller)
         {
+            if(anyState != null)
+            {
+                anyState.Subscribe(controller);
+            }
+
             SwitchState(initialState);
         }
 
@@ -29,6 +35,12 @@ namespace CombatSystem.StateMachine
         public StateMachine Clone()
         {
             StateMachine clone = Instantiate(this);
+
+            if(anyState != null)
+            {
+                clone.anyState = anyState.Clone();
+            }
+ 
             clone.states = new List<State>();
 
             states.ForEach((state) => 

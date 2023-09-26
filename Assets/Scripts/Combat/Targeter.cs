@@ -1,4 +1,5 @@
 using Cinemachine;
+using CombatSystem.Attributes;
 using UnityEngine;
 
 namespace CombatSystem.Combat
@@ -27,12 +28,13 @@ namespace CombatSystem.Combat
             }
 
             currentTarget = closestTarget;
+            currentTarget.GetComponent<Health>().onDie.AddListener(Cancel);
 
             if(cinemachineTargetGroup.FindMember(currentTarget.transform) == -1)
             {
                 cinemachineTargetGroup.AddMember(currentTarget.transform, targetGroupWeight, targetGroupRadius);
             }
-
+            
             return true;
         }
 
@@ -42,7 +44,8 @@ namespace CombatSystem.Combat
             {
                 return;
             }
-            
+
+            currentTarget.GetComponent<Health>().onDie.RemoveListener(Cancel);
             cinemachineTargetGroup.RemoveMember(currentTarget.transform);
             currentTarget = null;
         }

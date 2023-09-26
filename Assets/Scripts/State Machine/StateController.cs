@@ -14,7 +14,7 @@ namespace CombatSystem.StateMachine
         private void Start()
         {
             stateMachine = stateMachine.Clone();
-            stateMachine.Enter();
+            stateMachine.Enter(this);
         }
 
         private void Update()

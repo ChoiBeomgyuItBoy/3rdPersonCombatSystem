@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9821992e3e0515f4bb30282b9800cfe3, type: 3}
   m_Name: Player State Machine
   m_EditorClassIdentifier: 
-  initialState: {fileID: 0}
+  initialState: {fileID: 11400000, guid: da7aa0a085d3621429195cee3ce50ade, type: 2}
   currentState: {fileID: 0}
-  states: []
+  states:
+  - {fileID: 11400000, guid: 1d9797e2a5dccf34e8b3553551ef4713, type: 2}
+  - {fileID: 11400000, guid: da7aa0a085d3621429195cee3ce50ade, type: 2}
+  - {fileID: 11400000, guid: bbee54a987699cc4393a684171252344, type: 2}
+  - {fileID: 11400000, guid: 80c7238de501e75479d9f37485a74074, type: 2}

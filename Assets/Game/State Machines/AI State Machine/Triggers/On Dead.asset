@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9821992e3e0515f4bb30282b9800cfe3, type: 3}
-  m_Name: AI State Machine
+  m_Script: {fileID: 11500000, guid: d11682d5ba10dcc45a87184541632061, type: 3}
+  m_Name: On Dead
   m_EditorClassIdentifier: 
-  initialState: {fileID: 0}
-  currentState: {fileID: 0}
-  states: []
