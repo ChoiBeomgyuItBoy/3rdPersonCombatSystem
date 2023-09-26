@@ -14,6 +14,7 @@ namespace CombatSystem.StateMachine
 
         public void SwitchState(State newState)
         {
+            currentState?.Exit();
             currentState = cloneLookup[newState];
         }
 

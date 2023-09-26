@@ -4,12 +4,12 @@ using UnityEngine.Events;
 
 namespace CombatSystem.StateMachine.Triggers
 {
-    [CreateAssetMenu(menuName = "State Machine/Triggers/On Dead")]
-    public class OnDead : StateTrigger
+    [CreateAssetMenu(menuName = "State Machine/Triggers/On Damage Taken")]
+    public class OnDamageTaken : StateTrigger
     {
         protected override UnityEventBase GetEventTrigger()
         {
-            return controller.GetComponent<Health>().onDie;
+            return controller.GetComponent<Health>().onDamageTaken;
         }
     }
 }

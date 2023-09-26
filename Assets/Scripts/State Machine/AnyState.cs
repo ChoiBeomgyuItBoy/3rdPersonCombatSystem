@@ -21,8 +21,19 @@ namespace CombatSystem.StateMachine
             transitions.ForEach((transition) => 
             {
                 State trueState = transition.GetTrueState();
-                UnityEvent triggerEvent = transition.GetEventTrigger(controller);
-                triggerEvent.AddListener(() => controller.SwitchState(trueState));
+                UnityEventBase triggerEvent = transition.GetEventTrigger(controller);
+                
+                if(triggerEvent is UnityEvent)
+                {
+                    UnityEvent trigger = triggerEvent as UnityEvent;
+                    trigger.AddListener(() => controller.SwitchState(trueState));
+                }
+
+                if(triggerEvent is UnityEvent<float>)
+                {
+                    UnityEvent<float> trigger = triggerEvent as UnityEvent<float>;
+                    trigger.AddListener((value) => controller.SwitchState(trueState));
+                }
             });
         }
     }

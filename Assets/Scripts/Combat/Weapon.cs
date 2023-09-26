@@ -19,7 +19,7 @@ namespace CombatSystem.Combat
                 if(health == null) continue;
                 if(health == user.GetComponent<Health>()) continue;
                 
-                health.ChangeHealth(-GetTotalDamage(weaponConfig, currentAttack));
+                health.TakeDamage(GetTotalDamage(weaponConfig, currentAttack));
             }
         }
 

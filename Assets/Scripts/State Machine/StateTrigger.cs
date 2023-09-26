@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,7 +13,7 @@ namespace CombatSystem.StateMachine
             return Instantiate(this);
         }
 
-        public UnityEvent EventTrigger(StateController controller)
+        public UnityEventBase EventTrigger(StateController controller)
         {
             if(this.controller == null)
             {
@@ -22,6 +23,6 @@ namespace CombatSystem.StateMachine
             return GetEventTrigger();
         }
 
-        protected abstract UnityEvent GetEventTrigger();
+        protected abstract UnityEventBase GetEventTrigger();
     }   
 }

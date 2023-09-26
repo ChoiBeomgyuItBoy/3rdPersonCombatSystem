@@ -11,7 +11,7 @@ namespace CombatSystem.StateMachine.Actions
         protected override void OnEnter()
         {
             Animator animator = controller.GetComponent<Animator>();
-            animator.CrossFade(animationName, transitionDuration);
+            animator.CrossFadeInFixedTime(animationName, transitionDuration);
         }
 
         protected override void OnTick() { }

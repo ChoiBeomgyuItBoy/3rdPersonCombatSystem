@@ -36,4 +36,4 @@ MonoBehaviour:
     attackForce: 5
     applyForceTime: 0.2
   isRightHanded: 1
-  baseDamage: 50
+  baseDamage: 100

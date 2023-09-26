@@ -17,6 +17,11 @@ namespace CombatSystem.StateMachine
             CheckConditions(controller);
         }
 
+        public void Exit()
+        {
+            onExit?.Invoke(this);
+        }
+
         public State Clone()
         {
             State clone = Instantiate(this);
@@ -39,7 +44,6 @@ namespace CombatSystem.StateMachine
             {
                 if(transition.Check(controller, this))
                 {
-                    onExit?.Invoke(this);
                     controller.SwitchState(transition.GetTrueState());
                     return;
                 }

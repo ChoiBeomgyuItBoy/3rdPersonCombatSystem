@@ -38,7 +38,7 @@ Transform:
   - {fileID: 1666668620058318171}
   - {fileID: 4630868508918141424}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &684701164473144051
 CharacterController:
@@ -112,8 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02fc58b653db6514e88bf0b8125f54cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initalState: {fileID: 0}
-  currentState: {fileID: 0}
+  stateMachine: {fileID: 0}
 --- !u!114 &1996434372492438420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1000
   currentHealth: 0
-  onHealthChange:
+  onDamageTaken:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6296634871370432741}
@@ -156,6 +155,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDie:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7306966930165693078
 MonoBehaviour:
   m_ObjectHideFlags: 0

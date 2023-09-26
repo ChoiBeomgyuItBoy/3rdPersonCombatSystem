@@ -8,13 +8,7 @@ namespace CombatSystem.UI
         [SerializeField] RectTransform foreground;
         [SerializeField] Health health;
 
-        void Start()
-        {
-            health.onHealthChange.AddListener((healthChange) => UpdateBar());
-            UpdateBar();
-        }
-
-        void UpdateBar()
+        void Update()
         {
             foreground.localScale = new Vector3(health.GetHealthFraction(), 1, 1);
         }

@@ -10,7 +10,7 @@ namespace CombatSystem.StateMachine.Actions
         {
             Animator animator = controller.GetComponent<Animator>();
             ComboAttack currentAttack = controller.GetComponent<Fighter>().GetCurrentAttack();
-            animator.CrossFade(currentAttack.GetAnimationName(), 0.1f);
+            animator.CrossFadeInFixedTime(currentAttack.GetAnimationName(), 0.1f);
         }
 
         protected override void OnTick() { }

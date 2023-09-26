@@ -28,14 +28,14 @@ MonoBehaviour:
   - condition:
       and:
       - or:
+        - predicate: {fileID: 11400000, guid: 171708977a03924488fe6e2d2e4be31f, type: 2}
+          negate: 1
+      - or:
         - predicate: {fileID: 11400000, guid: 8e0c363327a1bfd498f639acba4486d2, type: 2}
           negate: 0
       - or:
         - predicate: {fileID: 11400000, guid: b23ad067b528b48458ebcc951dfd78c6, type: 2}
           negate: 0
-      - or:
-        - predicate: {fileID: 11400000, guid: 171708977a03924488fe6e2d2e4be31f, type: 2}
-          negate: 1
     trueState: {fileID: 11400000}
   - condition:
       and:

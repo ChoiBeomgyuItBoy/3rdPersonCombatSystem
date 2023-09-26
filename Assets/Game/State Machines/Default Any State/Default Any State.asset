@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cb95a1265364ab4bb9efdb99f957ca7, type: 3}
   m_Name: Default Any State
   m_EditorClassIdentifier: 
-  transitions: []
+  transitions:
+  - stateTrigger: {fileID: 11400000, guid: 91a23ee82da54dd478f71297cd92e156, type: 2}
+    trueState: {fileID: 11400000, guid: 9fed476950a699d4aa82bc6426b39ad7, type: 2}
+  - stateTrigger: {fileID: 11400000, guid: c96d3b75cb595aa46a2fa0108afc5ecb, type: 2}
+    trueState: {fileID: 11400000, guid: 9fed476950a699d4aa82bc6426b39ad7, type: 2}
