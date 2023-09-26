@@ -23,8 +23,6 @@ namespace CombatSystem.StateMachine.Actions
 
         protected override void OnTick()
         {
-            forceReceiver.MoveWithForces(Vector3.zero);
-
             float applyForceTime = currentAttack.GetApplyForceTime();
 
             if(fighter.GetAttackNormalizedTime() >= applyForceTime)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Default Any State
   m_EditorClassIdentifier: 
   transitions:
-  - stateTrigger: {fileID: 11400000, guid: 91a23ee82da54dd478f71297cd92e156, type: 2}
+  - trigger: {fileID: 11400000, guid: 91a23ee82da54dd478f71297cd92e156, type: 2}
     trueState: {fileID: 11400000, guid: 9fed476950a699d4aa82bc6426b39ad7, type: 2}
-  - stateTrigger: {fileID: 11400000, guid: c96d3b75cb595aa46a2fa0108afc5ecb, type: 2}
-    trueState: {fileID: 11400000, guid: 9fed476950a699d4aa82bc6426b39ad7, type: 2}
+  - trigger: {fileID: 11400000, guid: c96d3b75cb595aa46a2fa0108afc5ecb, type: 2}
+    trueState: {fileID: 11400000, guid: 465cb126fa0d77e45948abdf6d3b4201, type: 2}

@@ -1,4 +1,5 @@
 using CombatSystem.Attributes;
+using CombatSystem.Movement;
 using UnityEngine;
 
 namespace CombatSystem.Combat
@@ -15,11 +16,17 @@ namespace CombatSystem.Combat
             foreach(var hit in hits)
             {
                 Health health = hit.transform.GetComponent<Health>();
+                ForceReceiver forceReceiver = hit.transform.GetComponent<ForceReceiver>();
 
-                if(health == null) continue;
-                if(health == user.GetComponent<Health>()) continue;
-                
-                health.TakeDamage(GetTotalDamage(weaponConfig, currentAttack));
+                if(health != null && health != user.GetComponent<Health>()) 
+                {
+                    health.TakeDamage(GetTotalDamage(weaponConfig, currentAttack));
+                }
+
+                if(forceReceiver != null && forceReceiver != user.GetComponent<ForceReceiver>())
+                {
+                    forceReceiver.AddForce(GetTotalForce(user, health, currentAttack));
+                }
             }
         }
 
@@ -29,6 +36,14 @@ namespace CombatSystem.Combat
             float bonusPercentage = currentAttack.GetDamagePercentageBonus();
             float bonus = baseDamage * bonusPercentage;
             return baseDamage + bonus;
+        }
+
+        private Vector3 GetTotalForce(GameObject user, Health target, ComboAttack currentAttack)
+        {
+            Vector3 userPosition = user.transform.position;
+            Vector3 targetPosition = target.transform.position;
+            Vector3 forceDirection = (targetPosition - userPosition).normalized;
+            return forceDirection * currentAttack.GetKnockback();
         }
 
         private void OnDrawGizmosSelected()

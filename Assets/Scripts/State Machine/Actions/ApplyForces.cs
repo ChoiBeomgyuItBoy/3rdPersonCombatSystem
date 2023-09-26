@@ -7,6 +7,7 @@ namespace CombatSystem.StateMachine.Actions
     [CreateAssetMenu(menuName = "State Machine/Actions/Apply Forces")]
     public class ApplyForces : StateAction
     {
+        [SerializeField] bool moveNoMotion = true;
         ForceReceiver forceReceiver;
 
         protected override void OnEnter()
@@ -18,6 +19,11 @@ namespace CombatSystem.StateMachine.Actions
         protected override void OnTick()
         {
             forceReceiver.ApplyForces();
+
+            if(moveNoMotion)
+            {
+                forceReceiver.MoveWithForces(Vector3.zero);
+            }
         }
 
         protected override void OnExit()

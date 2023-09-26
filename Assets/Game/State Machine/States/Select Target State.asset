@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
   m_Name: Select Target State
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - {fileID: 11400000, guid: 2ca1d187a2be6824bba73552a219d53d, type: 2}
   transitions:
   - condition:
       and:
