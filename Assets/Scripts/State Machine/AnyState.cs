@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +15,11 @@ namespace CombatSystem.StateMachine
             AnyState clone = Instantiate(this);
             clone.transitions = transitions.ConvertAll((transition) => transition.Clone());
             return clone;
+        }
+
+        public List<TriggerTransition> GetTransitions()
+        {
+            return transitions;
         }
 
         public void Subscribe(StateController controller)

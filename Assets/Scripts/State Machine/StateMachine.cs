@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace CombatSystem.StateMachine
 {
@@ -44,7 +46,7 @@ namespace CombatSystem.StateMachine
  
             clone.states = new List<State>();
 
-            states.ForEach((state) => 
+            Traverse((state) => 
             {
                 clone.cloneLookup[state] = state.Clone();
                 clone.states.Add(clone.cloneLookup[state]);
@@ -52,5 +54,53 @@ namespace CombatSystem.StateMachine
 
             return clone;
         }  
+
+        private void Traverse(Action<State> visiter)
+        {
+            Queue<State> frontier = new Queue<State>();
+            Dictionary<State, bool> explored = new Dictionary<State, bool>();
+            State current = null;
+
+            frontier.Enqueue(initialState);
+
+            while(frontier.Count > 0)
+            {
+                current = frontier.Dequeue();
+
+                ExploreTransitions(frontier, explored, current);
+                SetAsExplored(visiter, explored, current);
+            }
+
+            if(anyState != null)
+            {
+                anyState.GetTransitions().ForEach((transition) =>
+                {
+                    current = transition.GetTrueState();
+                    SetAsExplored(visiter, explored, current);
+                });
+            }
+        }
+
+        private void ExploreTransitions(Queue<State> frontier, Dictionary<State, bool> explored, State current)
+        {
+            current.GetTransitions().ForEach((transition) =>
+            {
+                State neighbour = transition.GetTrueState();
+
+                if(!explored.ContainsKey(neighbour))
+                {
+                    frontier.Enqueue(neighbour);
+                }
+            });
+        }
+
+        private void SetAsExplored(Action<State> visiter, Dictionary<State, bool> explored, State current)
+        {
+            if(!explored.ContainsKey(current))
+            {
+                explored[current] = true;
+                visiter.Invoke(current);
+            }
+        }
     }
 }

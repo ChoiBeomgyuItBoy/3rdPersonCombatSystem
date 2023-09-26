@@ -11,6 +11,11 @@ namespace CombatSystem.StateMachine
         [SerializeField] List<StateTransition> transitions = new List<StateTransition>();
         public event Action<State> onExit;
 
+        public List<StateTransition> GetTransitions()
+        {
+            return transitions;
+        }
+
         public void Tick(StateController controller)
         {
             DoActions(controller);

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace CombatSystem.StateMachine
 {
     [System.Serializable]
-    class TriggerTransition
+    public class TriggerTransition
     {
         [SerializeField] StateTrigger trigger;
         [SerializeField] State trueState;

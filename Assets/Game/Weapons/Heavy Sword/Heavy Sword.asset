@@ -16,24 +16,32 @@ MonoBehaviour:
   equippedWeaponPrefab: {fileID: 123501736823044884, guid: ebe9d62d0185bad4998806b9f45ab177, type: 3}
   combo:
   - animationName: Big Sword Attack 1
-    timeToContinue: 0.6
+    attackForce: 3
+    forwardKnockback: 3
+    upKnockback: 0
     damagePercentageBonus: 0
-    attackForce: 3
     applyForceTime: 0.1
+    timeToContinue: 0.6
   - animationName: Big Sword Attack 2
-    timeToContinue: 0.6
+    attackForce: 3
+    forwardKnockback: 3
+    upKnockback: 0
     damagePercentageBonus: 0.2
-    attackForce: 3
     applyForceTime: 0.1
+    timeToContinue: 0.6
   - animationName: Big Sword Attack 3
-    timeToContinue: 0.6
-    damagePercentageBonus: 0.3
     attackForce: 3
+    forwardKnockback: 3
+    upKnockback: 0
+    damagePercentageBonus: 0.3
     applyForceTime: 0.1
-  - animationName: Big Sword Attack 15
     timeToContinue: 0.6
-    damagePercentageBonus: 0.4
+  - animationName: Big Sword Attack 15
     attackForce: 5
+    forwardKnockback: 7
+    upKnockback: 2
+    damagePercentageBonus: 0.4
     applyForceTime: 0.2
+    timeToContinue: 0.6
   isRightHanded: 1
   baseDamage: 200
