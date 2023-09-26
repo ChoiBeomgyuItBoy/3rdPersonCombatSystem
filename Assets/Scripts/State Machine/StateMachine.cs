@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 namespace CombatSystem.StateMachine
 {
@@ -13,6 +12,8 @@ namespace CombatSystem.StateMachine
         [SerializeField] AnyState anyState;
         [SerializeField] List<State> states = new List<State>();
         Dictionary<State, State> cloneLookup = new Dictionary<State, State>();
+        Queue<State> explored = new Queue<State>();
+        Dictionary<State, bool> visited = new Dictionary<State, bool>();
 
         public void SwitchState(State newState)
         {
@@ -22,7 +23,7 @@ namespace CombatSystem.StateMachine
 
         public void Enter(StateController controller)
         {
-            if(anyState != null)
+            if (anyState != null)
             {
                 anyState.Subscribe(controller);
             }
@@ -39,68 +40,71 @@ namespace CombatSystem.StateMachine
         {
             StateMachine clone = Instantiate(this);
 
-            if(anyState != null)
+            if (anyState != null)
             {
                 clone.anyState = anyState.Clone();
             }
  
             clone.states = new List<State>();
 
-            Traverse((state) => 
+            Traverse(clone, (state) => 
             {
                 clone.cloneLookup[state] = state.Clone();
                 clone.states.Add(clone.cloneLookup[state]);
             });
 
             return clone;
-        }  
+        }
 
-        private void Traverse(Action<State> visiter)
+        private void Traverse(StateMachine root, Action<State> visiter)
         {
-            Queue<State> frontier = new Queue<State>();
-            Dictionary<State, bool> explored = new Dictionary<State, bool>();
             State current = null;
 
-            frontier.Enqueue(initialState);
+            root.explored.Enqueue(initialState);
 
-            while(frontier.Count > 0)
+            while (root.explored.Count > 0)
             {
-                current = frontier.Dequeue();
-
-                ExploreTransitions(frontier, explored, current);
-                SetAsExplored(visiter, explored, current);
+                current = root.explored.Dequeue();
+                Visit(root, visiter, current);
             }
 
-            if(anyState != null)
+            if (anyState != null)
             {
-                anyState.GetTransitions().ForEach((transition) =>
-                {
-                    current = transition.GetTrueState();
-                    SetAsExplored(visiter, explored, current);
-                });
+                VisitAnyState(root, visiter, current);
             }
         }
 
-        private void ExploreTransitions(Queue<State> frontier, Dictionary<State, bool> explored, State current)
+        private void Visit(StateMachine root, Action<State> visiter, State current)
         {
             current.GetTransitions().ForEach((transition) =>
             {
                 State neighbour = transition.GetTrueState();
 
-                if(!explored.ContainsKey(neighbour))
+                if (!root.visited.ContainsKey(neighbour))
                 {
-                    frontier.Enqueue(neighbour);
+                    root.explored.Enqueue(neighbour);
                 }
             });
+
+            SetAsVisited(root, visiter, current);
         }
 
-        private void SetAsExplored(Action<State> visiter, Dictionary<State, bool> explored, State current)
+        private void SetAsVisited(StateMachine root, Action<State> visiter, State current)
         {
-            if(!explored.ContainsKey(current))
+            if (!root.visited.ContainsKey(current))
             {
-                explored[current] = true;
+                root.visited[current] = true;
                 visiter.Invoke(current);
             }
+        }
+
+        private void VisitAnyState(StateMachine root, Action<State> visiter, State current)
+        {
+            anyState.GetTransitions().ForEach((transition) =>
+            {
+                current = transition.GetTrueState();
+                SetAsVisited(root, visiter, current);
+            });
         }
     }
 }
