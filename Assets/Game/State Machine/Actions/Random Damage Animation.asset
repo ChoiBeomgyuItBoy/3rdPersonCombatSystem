@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Random Damage Animation
   m_EditorClassIdentifier: 
   possibleActions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 9284e38bc1f4ca049a6e1424834a46e8, type: 2}
+  - {fileID: 11400000, guid: 2e433dfb51c24fc4a827c7f95f9f66ff, type: 2}
+  - {fileID: 11400000, guid: df3465b99b0688c4b91d740a5bac8755, type: 2}

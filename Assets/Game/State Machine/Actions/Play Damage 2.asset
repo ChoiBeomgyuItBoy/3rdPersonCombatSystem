@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48528c19c93a3bf46ade1081dbb77c32, type: 3}
   m_Name: Play Damage 2
   m_EditorClassIdentifier: 
-  animationName: Damage 1
+  animationName: Damage 2
   transitionDuration: 0.1
   inFixedTime: 1

@@ -12,7 +12,7 @@ namespace CombatSystem.StateMachine
         {
             if(!started)
             {
-                Enter(caller);
+                Enter();
             }
 
             return OnCheck();
@@ -29,14 +29,14 @@ namespace CombatSystem.StateMachine
             return Instantiate(this);
         }
 
-        private void Enter(State caller)
+        private void Enter()
         {
             OnEnter();
             started = true;
             caller.onExit += Exit;
         }
 
-        private void Exit(State caller)
+        private void Exit()
         {
             OnExit();
             started = false;

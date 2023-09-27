@@ -9,8 +9,8 @@ namespace CombatSystem.StateMachine
     {
         [SerializeField] List<StateAction> actions = new List<StateAction>();
         [SerializeField] List<StateTransition> transitions = new List<StateTransition>();
-        public event Action<State> onExit;
         StateController controller;
+        public event Action onExit;
 
         public List<StateTransition> GetTransitions()
         {
@@ -25,7 +25,7 @@ namespace CombatSystem.StateMachine
 
         public void Exit()
         {
-            onExit?.Invoke(this);
+            onExit?.Invoke();
         }
 
         public void Bind(StateController controller)

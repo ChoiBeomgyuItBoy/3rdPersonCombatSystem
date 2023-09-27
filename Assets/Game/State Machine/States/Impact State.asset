@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Impact State
   m_EditorClassIdentifier: 
   actions:
-  - {fileID: 11400000, guid: 9284e38bc1f4ca049a6e1424834a46e8, type: 2}
+  - {fileID: 11400000, guid: 6676ecd071946e44586c88a2c4aa238f, type: 2}
   - {fileID: 11400000, guid: acea039b18548814980d4be82d7129a6, type: 2}
   transitions: []
