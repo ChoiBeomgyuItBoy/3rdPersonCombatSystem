@@ -14,15 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animatorOverride: {fileID: 22100000, guid: 4311e1c46e8783b44bcbee1d33d3055e, type: 2}
   equippedWeaponPrefab: {fileID: 6823638271258214933, guid: 5ce5f8f9f96603949b00b8bfce5490e1, type: 3}
+  isRightHanded: 1
+  baseDamage: 90
   combo:
   - animationName: Katana Attack 5
-    timeToContinue: 0.6
+    attackForce: 0
+    forwardKnockback: 1
+    upKnockback: 0
     damagePercentageBonus: 0
+    applyForceTime: 0
+    timeToContinue: 0.6
   - animationName: Katana Attack 6
-    timeToContinue: 0.6
+    attackForce: 0
+    forwardKnockback: 1
+    upKnockback: 0
     damagePercentageBonus: 0.3
-  - animationName: Katana Attack 9
+    applyForceTime: 0
     timeToContinue: 0.6
+  - animationName: Katana Attack 9
+    attackForce: 1
+    forwardKnockback: 1
+    upKnockback: 0
     damagePercentageBonus: 0.5
-  isRightHanded: 1
-  damage: 10
+    applyForceTime: 0.3
+    timeToContinue: 0.6
+  - animationName: Katana Attack 4
+    attackForce: 3
+    forwardKnockback: 3
+    upKnockback: 0
+    damagePercentageBonus: 0.5
+    applyForceTime: 0.1
+    timeToContinue: 0.6

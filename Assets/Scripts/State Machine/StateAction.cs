@@ -18,13 +18,13 @@ namespace CombatSystem.StateMachine
             OnTick();
         }
 
-        public void Bind(StateController controller, State caller)
+        public virtual void Bind(StateController controller, State caller)
         {
             this.controller = controller;
             this.caller = caller;
         }
 
-        public StateAction Clone()
+        public virtual StateAction Clone()
         {
             return Instantiate(this);
         }
