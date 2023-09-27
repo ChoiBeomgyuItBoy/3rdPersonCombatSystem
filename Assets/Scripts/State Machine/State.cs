@@ -10,21 +10,29 @@ namespace CombatSystem.StateMachine
         [SerializeField] List<StateAction> actions = new List<StateAction>();
         [SerializeField] List<StateTransition> transitions = new List<StateTransition>();
         public event Action<State> onExit;
+        StateController controller;
 
         public List<StateTransition> GetTransitions()
         {
             return transitions;
         }
 
-        public void Tick(StateController controller)
+        public void Tick()
         {
-            DoActions(controller);
-            CheckConditions(controller);
+            DoActions();
+            CheckConditions();
         }
 
         public void Exit()
         {
             onExit?.Invoke(this);
+        }
+
+        public void Bind(StateController controller)
+        {
+            this.controller = controller;
+            actions.ForEach((action) => action.Bind(controller, this));
+            transitions.ForEach((transition) => transition.Bind(controller, this));
         }
 
         public State Clone()
@@ -35,19 +43,19 @@ namespace CombatSystem.StateMachine
             return clone;
         }
 
-        private void DoActions(StateController controller)
+        private void DoActions()
         {
             actions.ForEach((action) =>
             {
-                action.Tick(controller, this);
+                action.Tick();
             });
         } 
 
-        private void CheckConditions(StateController controller)
+        private void CheckConditions()
         {
             transitions.ForEach((transition) =>
             {
-                if(transition.Check(controller, this))
+                if(transition.Check())
                 {
                     controller.SwitchState(transition.GetTrueState());
                     return;

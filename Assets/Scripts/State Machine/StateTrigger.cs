@@ -7,19 +7,19 @@ namespace CombatSystem.StateMachine
     {
         protected StateController controller;
 
+        public UnityEventBase EventTrigger()
+        {
+            return GetEventTrigger();
+        }
+
+        public void Bind(StateController controller)
+        {
+            this.controller = controller;
+        }
+
         public StateTrigger Clone()
         {
             return Instantiate(this);
-        }
-
-        public UnityEventBase EventTrigger(StateController controller)
-        {
-            if(this.controller == null)
-            {
-                this.controller = controller;
-            }
-            
-            return GetEventTrigger();
         }
 
         protected abstract UnityEventBase GetEventTrigger();

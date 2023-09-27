@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace CombatSystem.Combat
@@ -9,7 +8,7 @@ namespace CombatSystem.Combat
         [SerializeField] string animationName = "";
         [SerializeField] float attackForce = 1;
         [SerializeField] float forwardKnockback = 3;
-        [SerializeField] float upKnockback = 3;
+        [SerializeField] float upKnockback = 0;
         [SerializeField] [Range(0,1)] float damagePercentageBonus = 0.2f;
         [SerializeField] [Range(0,0.9f)] float applyForceTime = 0.6f;
         [SerializeField] [Range(0,0.9f)] float timeToContinue = 0.6f;

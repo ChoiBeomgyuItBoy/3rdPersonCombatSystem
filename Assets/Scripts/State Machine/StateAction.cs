@@ -5,26 +5,28 @@ namespace CombatSystem.StateMachine
     public abstract class StateAction : ScriptableObject
     {
         protected StateController controller;
+        protected State caller;
         bool started = false;
 
-        public StateAction Clone()
+        public void Tick()
         {
-            return Instantiate(this);
-        }
-
-        public void Tick(StateController controller, State caller)
-        {
-            if(this.controller == null)
-            {
-                this.controller = controller;
-            }
-
             if(!started)
             {
                 Enter(caller);
             }
 
             OnTick();
+        }
+
+        public void Bind(StateController controller, State caller)
+        {
+            this.controller = controller;
+            this.caller = caller;
+        }
+
+        public StateAction Clone()
+        {
+            return Instantiate(this);
         }
 
         private void Enter(State caller)

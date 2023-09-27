@@ -5,26 +5,28 @@ namespace CombatSystem.StateMachine
     public abstract class StatePredicate : ScriptableObject
     {
         protected StateController controller;
+        protected State caller;
         bool started = false;
 
-        public StatePredicate Clone()
+        public bool Check()
         {
-            return Instantiate(this);
-        }
-
-        public bool Check(StateController controller, State caller)
-        {
-            if(this.controller == null)
-            {
-                this.controller = controller;
-            }
-
             if(!started)
             {
                 Enter(caller);
             }
 
             return OnCheck();
+        }
+
+        public void Bind(StateController controller, State caller)
+        {
+            this.controller = controller;
+            this.caller = caller;
+        }
+
+        public StatePredicate Clone()
+        {
+            return Instantiate(this);
         }
 
         private void Enter(State caller)

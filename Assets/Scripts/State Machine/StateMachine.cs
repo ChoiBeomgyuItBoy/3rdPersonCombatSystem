@@ -12,8 +12,18 @@ namespace CombatSystem.StateMachine
         [SerializeField] AnyState anyState;
         [SerializeField] List<State> states = new List<State>();
         Dictionary<State, State> cloneLookup = new Dictionary<State, State>();
-        Queue<State> explored = new Queue<State>();
         Dictionary<State, bool> visited = new Dictionary<State, bool>();
+        Queue<State> explored = new Queue<State>();
+
+        public void Enter()
+        {
+            if (anyState != null)
+            {
+                anyState.Subscribe();
+            }
+
+            SwitchState(initialState);
+        }
 
         public void SwitchState(State newState)
         {
@@ -21,19 +31,19 @@ namespace CombatSystem.StateMachine
             currentState = cloneLookup[newState];
         }
 
-        public void Enter(StateController controller)
+        public void Tick()
         {
-            if (anyState != null)
-            {
-                anyState.Subscribe(controller);
-            }
-
-            SwitchState(initialState);
+            currentState?.Tick();
         }
 
-        public void Tick(StateController controller)
+        public void Bind(StateController controller)
         {
-            currentState?.Tick(controller);
+            Traverse((state) => 
+            {
+                cloneLookup[state].Bind(controller);
+            });
+
+            anyState.Bind(controller);
         }
 
         public StateMachine Clone()
@@ -47,7 +57,7 @@ namespace CombatSystem.StateMachine
  
             clone.states = new List<State>();
 
-            Traverse(clone, (state) => 
+            Traverse((state) => 
             {
                 clone.cloneLookup[state] = state.Clone();
                 clone.states.Add(clone.cloneLookup[state]);
@@ -56,54 +66,56 @@ namespace CombatSystem.StateMachine
             return clone;
         }
 
-        private void Traverse(StateMachine root, Action<State> visiter)
+        private void Traverse(Action<State> visiter)
         {
-            State current = null;
+            visited.Clear();
+            explored.Clear();
 
-            root.explored.Enqueue(initialState);
+            explored.Enqueue(initialState);
 
-            while (root.explored.Count > 0)
+            while (explored.Count > 0)
             {
-                current = root.explored.Dequeue();
-                Visit(root, visiter, current);
+                Visit(visiter);
             }
 
             if (anyState != null)
             {
-                VisitAnyState(root, visiter, current);
+                VisitAnyState(visiter);
             }
         }
 
-        private void Visit(StateMachine root, Action<State> visiter, State current)
+        private void Visit(Action<State> visiter)
         {
+            State current = explored.Dequeue();
+
             current.GetTransitions().ForEach((transition) =>
             {
                 State neighbour = transition.GetTrueState();
 
-                if (!root.visited.ContainsKey(neighbour))
+                if (!visited.ContainsKey(neighbour))
                 {
-                    root.explored.Enqueue(neighbour);
+                    explored.Enqueue(neighbour);
                 }
             });
 
-            SetAsVisited(root, visiter, current);
+            SetAsVisited(visiter, current);
         }
 
-        private void SetAsVisited(StateMachine root, Action<State> visiter, State current)
+        private void SetAsVisited(Action<State> visiter, State current)
         {
-            if (!root.visited.ContainsKey(current))
+            if (!visited.ContainsKey(current))
             {
-                root.visited[current] = true;
+                visited[current] = true;
                 visiter.Invoke(current);
             }
         }
 
-        private void VisitAnyState(StateMachine root, Action<State> visiter, State current)
+        private void VisitAnyState(Action<State> visiter)
         {
             anyState.GetTransitions().ForEach((transition) =>
             {
-                current = transition.GetTrueState();
-                SetAsVisited(root, visiter, current);
+                State current = transition.GetTrueState();
+                SetAsVisited(visiter, current);
             });
         }
     }

@@ -8,11 +8,12 @@ namespace CombatSystem.Combat
         [Header("Setup")]
         [SerializeField] AnimatorOverrideController animatorOverride;
         [SerializeField] Weapon equippedWeaponPrefab;
-        [SerializeField] ComboAttack[] combo;
         [SerializeField] bool isRightHanded = true;
         
         [Header("Info")]
         [SerializeField] float baseDamage = 50;
+        [SerializeField] ComboAttack[] combo;
+        
         const string weaponName = "Weapon";
 
         public float GetBaseDamage()

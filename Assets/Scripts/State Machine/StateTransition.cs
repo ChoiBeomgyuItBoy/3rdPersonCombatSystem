@@ -13,9 +13,14 @@ namespace CombatSystem.StateMachine
             return trueState;
         }
         
-        public bool Check(StateController controller, State caller)
+        public bool Check()
         {
-            return condition.Check(controller, caller);
+            return condition.Check();
+        }
+
+        public void Bind(StateController controller, State caller)
+        {
+            condition.Bind(controller, caller);
         }
 
         public StateTransition Clone()

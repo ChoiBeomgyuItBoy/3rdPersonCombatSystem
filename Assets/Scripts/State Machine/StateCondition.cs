@@ -8,19 +8,24 @@ namespace CombatSystem.StateMachine
     {   
         [SerializeField] List<Disjunction> and = new List<Disjunction>();
 
-        public bool Check(StateController controller, State caller)
+        public bool Check()
         {
             if(and.Count == 0) return false;
 
             foreach(var disjunction in and)
             {
-                if(!disjunction.Check(controller, caller))
+                if(!disjunction.Check())
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        public void Bind(StateController controller, State caller)
+        {
+            and.ForEach((and) => and.Bind(controller, caller));
         }
 
         public StateCondition Clone()
@@ -35,11 +40,11 @@ namespace CombatSystem.StateMachine
         {
             [SerializeField] List<Predicate> or = new List<Predicate>();
 
-            public bool Check(StateController controller, State caller)
+            public bool Check()
             {
                 foreach(var predicate in or)
                 {
-                    if(predicate.Check(controller, caller))
+                    if(predicate.Check())
                     {
                         return true;
                     }
@@ -48,13 +53,17 @@ namespace CombatSystem.StateMachine
                 return false;
             }
 
+            public void Bind(StateController controller, State caller)
+            {
+                or.ForEach((or) => or.Bind(controller, caller));
+            }
+
             public Disjunction Clone()
             {
                 Disjunction clone = new Disjunction();
                 clone.or = or.ConvertAll((predicate) => predicate.Clone());
                 return clone;
             }
-
         }
 
         [System.Serializable]
@@ -62,10 +71,9 @@ namespace CombatSystem.StateMachine
         {
             [SerializeField] StatePredicate predicate;
             [SerializeField] bool negate = false;
-
-            public bool Check(StateController controller, State caller)
+            public bool Check()
             {
-                bool result = predicate.Check(controller, caller);
+                bool result = predicate.Check();
 
                 if(result == negate)
                 {
@@ -73,6 +81,11 @@ namespace CombatSystem.StateMachine
                 }
 
                 return true;
+            }
+
+            public void Bind(StateController controller, State caller)
+            {
+                predicate.Bind(controller, caller);
             }
 
             public Predicate Clone()

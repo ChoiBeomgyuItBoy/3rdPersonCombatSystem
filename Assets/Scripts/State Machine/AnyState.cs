@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,25 +8,19 @@ namespace CombatSystem.StateMachine
     public class AnyState : ScriptableObject
     {
         [SerializeField] List<TriggerTransition> transitions;
-
-        public AnyState Clone()
-        {
-            AnyState clone = Instantiate(this);
-            clone.transitions = transitions.ConvertAll((transition) => transition.Clone());
-            return clone;
-        }
+        StateController controller;
 
         public List<TriggerTransition> GetTransitions()
         {
             return transitions;
         }
 
-        public void Subscribe(StateController controller)
+        public void Subscribe()
         {
             transitions.ForEach((transition) => 
             {
                 State trueState = transition.GetTrueState();
-                UnityEventBase triggerEvent = transition.GetEventTrigger(controller);
+                UnityEventBase triggerEvent = transition.GetEventTrigger();
                 
                 if(triggerEvent is UnityEvent)
                 {
@@ -41,6 +34,20 @@ namespace CombatSystem.StateMachine
                     trigger.AddListener((value) => controller.SwitchState(trueState));
                 }
             });
+        }
+
+        public void Bind(StateController controller)
+        {
+            this.controller = controller;
+
+            transitions.ForEach((transition) => transition.Bind(controller));
+        }
+
+        public AnyState Clone()
+        {
+            AnyState clone = Instantiate(this);
+            clone.transitions = transitions.ConvertAll((transition) => transition.Clone());
+            return clone;
         }
     }
 }

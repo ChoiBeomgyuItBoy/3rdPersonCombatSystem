@@ -14,12 +14,13 @@ namespace CombatSystem.StateMachine
         private void Start()
         {
             stateMachine = stateMachine.Clone();
-            stateMachine.Enter(this);
+            stateMachine.Bind(this);
+            stateMachine.Enter();
         }
 
         private void Update()
         {
-            stateMachine.Tick(this);
+            stateMachine.Tick();
         }
     }
 }
