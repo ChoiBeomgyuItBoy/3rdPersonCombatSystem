@@ -58,9 +58,14 @@ namespace CombatSystem.StateMachine
         {
             State state = CreateInstance<State>();
             state.name = Guid.NewGuid().ToString();
+
+            Undo.RecordObject(this, "(State Machine) State Created");
             states.Add(state);
+
             AssetDatabase.AddObjectToAsset(state, this);
+            //Undo.RegisterCreatedObjectUndo(state, "(State Machine) State Created");
             AssetDatabase.SaveAssets();
+
             return state;
         }
 
@@ -72,24 +77,30 @@ namespace CombatSystem.StateMachine
             }
             
             StateTransition transition = new StateTransition();
+            Undo.RecordObject(startState, "(State Machine) Transition Created");
+
             transition.SetTrueState(endState);
             startState.GetTransitions().Add(transition);
-            AssetDatabase.SaveAssets();
+
+            EditorUtility.SetDirty(startState);
             return transition;
         }
 
         public void RemoveState(State state)
         {
+            Undo.RecordObject(this, "(State Machine) State Removed");
             states.Remove(state);
-            AssetDatabase.RemoveObjectFromAsset(state);
+            Undo.DestroyObjectImmediate(state);
             AssetDatabase.SaveAssets();
         }
 
         public void RemoveTransition(State startState, State endState)
         {
             StateTransition transition = startState.GetTransition(endState);
+            Undo.RecordObject(startState, "(State Machine) Transition Removed");
+
             startState.GetTransitions().Remove(transition);
-            AssetDatabase.SaveAssets();
+            EditorUtility.SetDirty(startState);
         }
 
         public void RemoveTransitionsWithState(State endState)
@@ -100,11 +111,6 @@ namespace CombatSystem.StateMachine
             });
 
             AssetDatabase.SaveAssets();
-        }
-
-        public bool HasTransition(State startState, State endState)
-        {
-            return startState.GetTransition(endState) != null;
         }
 #endif
 

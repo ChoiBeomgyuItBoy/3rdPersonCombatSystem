@@ -4,6 +4,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace CombatSystem.StateMachine.Editor
 {
@@ -24,6 +25,8 @@ namespace CombatSystem.StateMachine.Editor
 
             StyleSheet uss = AssetDatabase.LoadAssetAtPath<StyleSheet>(StateMachineEditor.path + "StateMachineEditor.uss");
             styleSheets.Add(uss);
+
+            Undo.undoRedoPerformed += OnUndoRedo;
         }
 
         public void PopulateView(StateMachine stateMachine)
@@ -36,6 +39,12 @@ namespace CombatSystem.StateMachine.Editor
 
             stateMachine.GetStates().ForEach(state => CreateStateItem(state));
             stateMachine.GetStates().ForEach(state => CreateTransitions(state));
+        }
+
+        private void OnUndoRedo()
+        {
+            PopulateView(stateMachine);
+            AssetDatabase.SaveAssets();
         }
 
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
