@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
   m_Name: Attack State
   m_EditorClassIdentifier: 
+  stateName: Attack State
+  position: {x: 475, y: 47.48001}
   actions:
   - {fileID: 11400000, guid: 607d7888ac4ad384d9cfc28a3fd6e481, type: 2}
   - {fileID: 11400000, guid: acea039b18548814980d4be82d7129a6, type: 2}

@@ -1,0 +1,38 @@
+.background {
+    background-color: rgb(56, 56, 56);
+}
+
+.invisiblePort {
+    position: absolute;
+    align-self: center;
+    height: 50px;
+    width: 150px;
+    justify-content: center;
+    padding: 0;
+}
+
+.invisiblePort.output {
+    padding: 0;
+}
+
+.invisiblePort.input {
+    padding: 0;
+}
+
+.container {
+    width: 200px;
+    height: 50px;
+    background-color: rgb(62, 62, 62);
+    border-radius: 5px;
+    border-color: rgb(29, 29, 30);
+    border-width: 1px;
+}
+
+.header {
+    font-size: 15px;
+    -unity-text-align: upper-center;
+}
+
+Port > Label {
+    display: none;
+}

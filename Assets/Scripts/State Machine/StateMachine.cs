@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace CombatSystem.StateMachine
@@ -14,6 +15,11 @@ namespace CombatSystem.StateMachine
         Dictionary<State, State> cloneLookup = new Dictionary<State, State>();
         Dictionary<State, bool> visited = new Dictionary<State, bool>();
         Queue<State> explored = new Queue<State>();
+
+        public List<State> GetStates()
+        {   
+            return states;
+        }
 
         public void Enter()
         {
@@ -38,13 +44,59 @@ namespace CombatSystem.StateMachine
 
         public void Bind(StateController controller)
         {
-            Traverse((state) => 
+            Traverse(state => 
             {
                 cloneLookup[state].Bind(controller);
             });
 
             anyState.Bind(controller);
         }
+
+
+#if UNITY_EDITOR
+        public State CreateState()
+        {
+            State state = CreateInstance<State>();
+            state.name = Guid.NewGuid().ToString();
+            states.Add(state);
+            AssetDatabase.AddObjectToAsset(state, this);
+            AssetDatabase.SaveAssets();
+            return state;
+        }
+
+        public StateTransition CreateTransition(State startState, State endState)
+        {
+            StateTransition transition = new StateTransition();
+            transition.SetTrueState(endState);
+            startState.GetTransitions().Add(transition);
+            AssetDatabase.SaveAssets();
+            return transition;
+        }
+
+        public void RemoveState(State state)
+        {
+            states.Remove(state);
+            AssetDatabase.RemoveObjectFromAsset(state);
+            AssetDatabase.SaveAssets();
+        }
+
+        public void RemoveTransition(State startState, State endState)
+        {
+            StateTransition transition = startState.GetTransition(endState);
+            startState.GetTransitions().Remove(transition);
+            AssetDatabase.SaveAssets();
+        }
+
+        public void RemoveTransitionsWithState(State endState)
+        {
+            states.ForEach(state =>
+            {
+                RemoveTransition(state, endState);
+            });
+
+            AssetDatabase.SaveAssets();
+        }
+#endif
 
         public StateMachine Clone()
         {
@@ -88,7 +140,7 @@ namespace CombatSystem.StateMachine
         {
             State current = explored.Dequeue();
 
-            current.GetTransitions().ForEach((transition) =>
+            current.GetTransitions().ForEach(transition =>
             {
                 State neighbour = transition.GetTrueState();
 
@@ -112,7 +164,7 @@ namespace CombatSystem.StateMachine
 
         private void VisitAnyState(Action<State> visiter)
         {
-            anyState.GetTransitions().ForEach((transition) =>
+            anyState.GetTransitions().ForEach(transition =>
             {
                 State current = transition.GetTrueState();
                 SetAsVisited(visiter, current);

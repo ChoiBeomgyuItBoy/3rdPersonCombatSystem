@@ -12,6 +12,11 @@ namespace CombatSystem.StateMachine
         {
             return trueState;
         }
+
+        public void SetTrueState(State trueState)
+        {
+            this.trueState = trueState;
+        }
         
         public bool Check()
         {

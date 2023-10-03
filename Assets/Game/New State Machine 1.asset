@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9821992e3e0515f4bb30282b9800cfe3, type: 3}
+  m_Name: New State Machine 1
+  m_EditorClassIdentifier: 
+  initialState: {fileID: 0}
+  currentState: {fileID: 0}
+  anyState: {fileID: 0}
+  states:
+  - {fileID: 5592633585830341899}
+  - {fileID: 5381172926108229463}
+--- !u!114 &5381172926108229463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
+  m_Name: 643ccbde-ce79-41f1-b92b-76e7f6f310ce
+  m_EditorClassIdentifier: 
+  stateName: New State
+  position: {x: 89.87999, y: 142.52}
+  actions: []
+  transitions: []
+--- !u!114 &5592633585830341899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
+  m_Name: 836eaaf2-5dd9-424d-9eb3-aec34c879d74
+  m_EditorClassIdentifier: 
+  stateName: New State
+  position: {x: 54, y: 359.44}
+  actions: []
+  transitions:
+  - condition:
+      and: []
+    trueState: {fileID: 5381172926108229463}
