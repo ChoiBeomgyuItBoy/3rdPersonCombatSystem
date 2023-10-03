@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
@@ -43,13 +44,18 @@ namespace CombatSystem.StateMachine.Editor
 
             if(edgesToCreate != null)
             {
-                edgesToCreate.ForEach(edge =>
+                for(int i = edgesToCreate.Count - 1; i >= 0; i--)
                 {
+                    Edge edge = edgesToCreate[i];
                     StateEdge stateEdge = edge as StateEdge;
                     StateItem startItem = edge.output.node as StateItem;
                     StateItem endItem = edge.input.node as StateItem;
-                    stateMachine.CreateTransition(startItem.GetState(), endItem.GetState());
-                });
+
+                    if(stateMachine.CreateTransition(startItem.GetState(), endItem.GetState()) == null)
+                    {
+                        edgesToCreate.RemoveAt(i);
+                    }   
+                }
             }
 
             List<GraphElement> elementsToRemove = graphViewChange.elementsToRemove;
@@ -84,7 +90,8 @@ namespace CombatSystem.StateMachine.Editor
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             base.BuildContextualMenu(evt);
-            evt.menu.AppendAction("Add State", action => CreateState());
+            Vector2 mousePosition = viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition);
+            evt.menu.AppendAction("Add State", action => CreateState(mousePosition));
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -94,10 +101,11 @@ namespace CombatSystem.StateMachine.Editor
                 endPort.node != startPort.node).ToList();
         }
 
-        private void CreateState()
+        private void CreateState(Vector2 position)
         {
             State state = stateMachine.CreateState();
             CreateStateItem(state);
+            GetStateItem(state).SetPosition(new Rect(position.x, position.y, 0, 0));
         }
 
         private void CreateStateItem(State state)

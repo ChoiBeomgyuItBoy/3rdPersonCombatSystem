@@ -66,6 +66,11 @@ namespace CombatSystem.StateMachine
 
         public StateTransition CreateTransition(State startState, State endState)
         {
+            if(startState.GetTransition(endState) != null)
+            {
+                return null;
+            }
+            
             StateTransition transition = new StateTransition();
             transition.SetTrueState(endState);
             startState.GetTransitions().Add(transition);
@@ -95,6 +100,11 @@ namespace CombatSystem.StateMachine
             });
 
             AssetDatabase.SaveAssets();
+        }
+
+        public bool HasTransition(State startState, State endState)
+        {
+            return startState.GetTransition(endState) != null;
         }
 #endif
 

@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 
 namespace CombatSystem.StateMachine.Editor
 {
@@ -9,15 +11,24 @@ namespace CombatSystem.StateMachine.Editor
         State state;
         Port inputPort;
         Port outputPort;
+        Label titleLabel;
 
         public StateItem(State state) : base(StateMachineEditor.path + "StateItem.uxml")
         {
             this.state = state;
-            title = state.GetName();
+            title = state.stateName;
             viewDataKey = state.name;
             style.left = state.GetPosition().x;
             style.top = state.GetPosition().y;
+            BindTitle(state);
             CreatePorts();
+        }
+
+        private void BindTitle(State state)
+        {
+            titleLabel = this.Q<Label>("title-label");
+            titleLabel.bindingPath = "stateName";
+            titleLabel.Bind(new SerializedObject(state));
         }
 
         public State GetState()

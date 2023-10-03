@@ -8,17 +8,12 @@ namespace CombatSystem.StateMachine
     [CreateAssetMenu(menuName = "State Machine/New State")]
     public class State : ScriptableObject
     {
-        [SerializeField] string stateName = "New State";
+        public string stateName = "New State";
         [SerializeField] Vector2 position = Vector2.zero;
         [SerializeField] List<StateAction> actions = new List<StateAction>();
         [SerializeField] List<StateTransition> transitions = new List<StateTransition>();
         StateController controller;
         public event Action onExit;
-
-        public string GetName()
-        {
-            return stateName;
-        }
 
         public Vector2 GetPosition()
         {
@@ -32,12 +27,7 @@ namespace CombatSystem.StateMachine
 
         public StateTransition GetTransition(State trueState)
         {
-            if(transitions.Count == 0)
-            {
-                return null;
-            }
-
-            return transitions.Single(transition => transition.GetTrueState() == trueState);
+            return transitions.SingleOrDefault(transition => transition.GetTrueState() == trueState);
         }
 
         public void SetPosition(Vector2 position)

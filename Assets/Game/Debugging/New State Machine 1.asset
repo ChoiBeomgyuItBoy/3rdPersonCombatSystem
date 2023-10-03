@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1780199234147352001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
+  m_Name: 1b9d8ca6-b379-4e46-8fd1-74aa5a3fc5a4
+  m_EditorClassIdentifier: 
+  stateName: State
+  position: {x: -3, y: 249}
+  actions: []
+  transitions:
+  - condition:
+      and: []
+    trueState: {fileID: 2803597089372375587}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16,9 +35,9 @@ MonoBehaviour:
   currentState: {fileID: 0}
   anyState: {fileID: 0}
   states:
-  - {fileID: 5592633585830341899}
-  - {fileID: 5381172926108229463}
---- !u!114 &5381172926108229463
+  - {fileID: 2803597089372375587}
+  - {fileID: -1780199234147352001}
+--- !u!114 &2803597089372375587
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28,28 +47,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
-  m_Name: 643ccbde-ce79-41f1-b92b-76e7f6f310ce
+  m_Name: 5d4dcbed-2e8c-4d79-835c-bb887f346f90
   m_EditorClassIdentifier: 
-  stateName: New State
-  position: {x: 89.87999, y: 142.52}
-  actions: []
-  transitions: []
---- !u!114 &5592633585830341899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16db739f918ebe541866608ab1b1084c, type: 3}
-  m_Name: 836eaaf2-5dd9-424d-9eb3-aec34c879d74
-  m_EditorClassIdentifier: 
-  stateName: New State
-  position: {x: 54, y: 359.44}
+  stateName: State1
+  position: {x: 0, y: 0}
   actions: []
   transitions:
   - condition:
       and: []
-    trueState: {fileID: 5381172926108229463}
+    trueState: {fileID: -1780199234147352001}
