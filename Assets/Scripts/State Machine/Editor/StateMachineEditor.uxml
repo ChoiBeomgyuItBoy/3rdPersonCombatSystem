@@ -1,7 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/Scripts/State%20Machine/Editor/StateMachineEditor.uss?fileID=7433441132597879392&amp;guid=b7847227a1067654196b1e004bd31939&amp;type=3#StateMachineEditor" />
     <CombatSystem.StateMachine.Editor.SplitView fixed-pane-initial-dimension="250">
-        <ui:VisualElement name="leftPanel" />
+        <ui:VisualElement name="leftPanel">
+            <CombatSystem.StateMachine.Editor.StateInspector />
+        </ui:VisualElement>
         <ui:VisualElement name="rightPanel">
             <uie:Toolbar name="stateMachineToolbar" style="height: 15px;" />
             <CombatSystem.StateMachine.Editor.StateMachineView focusable="true" name="stateMachineContainer" style="flex-grow: 1;" />

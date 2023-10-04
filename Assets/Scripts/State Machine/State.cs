@@ -20,6 +20,11 @@ namespace CombatSystem.StateMachine
             return position;
         }
 
+        public List<StateAction> GetActions()
+        {
+            return actions;
+        }
+
         public List<StateTransition> GetTransitions()
         {
             return transitions;

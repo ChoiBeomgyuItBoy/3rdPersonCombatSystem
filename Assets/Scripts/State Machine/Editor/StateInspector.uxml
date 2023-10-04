@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/State%20Machine/Editor/StateInspector.uss?fileID=7433441132597879392&amp;guid=4f6a81b5adf02004bb17ea7f736c7416&amp;type=3#StateInspector" />
+    <ui:VisualElement name="DisplayingActions" class="container">
+        <ui:Label tabindex="-1" text="Actions" display-tooltip-when-elided="true" name="actionsLabel" class="header" />
+        <ui:ScrollView name="actionListScrollView" class="border background" />
+    </ui:VisualElement>
+    <ui:VisualElement name="DisplayingTransitions" class="container">
+        <ui:Label tabindex="-1" text="Transitions" display-tooltip-when-elided="true" name="transitionsLabel" class="header" />
+        <ui:ScrollView name="transitionListScrollView" class="border background" />
+    </ui:VisualElement>
+</ui:UXML>

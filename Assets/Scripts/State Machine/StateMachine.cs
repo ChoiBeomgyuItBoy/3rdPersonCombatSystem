@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEditor;
 using UnityEngine;
 
@@ -63,7 +64,6 @@ namespace CombatSystem.StateMachine
             states.Add(state);
 
             AssetDatabase.AddObjectToAsset(state, this);
-            //Undo.RegisterCreatedObjectUndo(state, "(State Machine) State Created");
             AssetDatabase.SaveAssets();
 
             return state;
@@ -94,23 +94,30 @@ namespace CombatSystem.StateMachine
             AssetDatabase.SaveAssets();
         }
 
+        public void RemoveStateWithTransitions(State state)
+        {
+            Undo.RecordObject(this, "(State Machine) State Removed");
+
+            states.ForEach(candidate =>
+            {
+                RemoveTransition(candidate, state);
+            });
+
+            states.Remove(state);
+            Undo.DestroyObjectImmediate(state);
+            AssetDatabase.SaveAssets();
+        }
+
         public void RemoveTransition(State startState, State endState)
         {
             StateTransition transition = startState.GetTransition(endState);
-            Undo.RecordObject(startState, "(State Machine) Transition Removed");
 
-            startState.GetTransitions().Remove(transition);
-            EditorUtility.SetDirty(startState);
-        }
-
-        public void RemoveTransitionsWithState(State endState)
-        {
-            states.ForEach(state =>
+            if(transition != null)
             {
-                RemoveTransition(state, endState);
-            });
-
-            AssetDatabase.SaveAssets();
+                Undo.RecordObject(startState, "(State Machine) Transition Removed");
+                startState.GetTransitions().Remove(transition);
+                EditorUtility.SetDirty(startState);
+            }
         }
 #endif
 

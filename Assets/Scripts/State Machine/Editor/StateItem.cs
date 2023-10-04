@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
+using System;
 
 namespace CombatSystem.StateMachine.Editor
 {
@@ -12,6 +13,7 @@ namespace CombatSystem.StateMachine.Editor
         Port inputPort;
         Port outputPort;
         Label titleLabel;
+        public Action<StateItem> onStateSelected;
 
         public StateItem(State state) : base(StateMachineEditor.path + "StateItem.uxml")
         {
@@ -58,6 +60,7 @@ namespace CombatSystem.StateMachine.Editor
         {
             base.OnSelected();
             Selection.activeObject = state;
+            onStateSelected?.Invoke(this);
         }
 
         private class SimulatePress : MouseDownEvent

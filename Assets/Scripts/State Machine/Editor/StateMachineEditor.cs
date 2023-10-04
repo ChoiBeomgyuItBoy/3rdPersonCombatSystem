@@ -8,6 +8,7 @@ namespace CombatSystem.StateMachine.Editor
     public class StateMachineEditor : EditorWindow
     {
         StateMachineView stateMachineView;
+        StateInspector stateInspector;
 
         public const string path = "Assets/Scripts/State Machine/Editor/";
 
@@ -43,6 +44,9 @@ namespace CombatSystem.StateMachine.Editor
             root.styleSheets.Add(styleSheet);
 
             stateMachineView = root.Q<StateMachineView>();
+            stateInspector = root.Q<StateInspector>();
+
+            stateMachineView.onStateSelected = OnStateSelectionChange;
 
             OnSelectionChange();
         }
@@ -55,6 +59,11 @@ namespace CombatSystem.StateMachine.Editor
             {
                 stateMachineView.PopulateView(stateMachine);
             }
+        }
+
+        private void OnStateSelectionChange(StateItem stateItem)
+        {
+            stateInspector.UpdateSelection(stateItem);
         }
     }
 }
