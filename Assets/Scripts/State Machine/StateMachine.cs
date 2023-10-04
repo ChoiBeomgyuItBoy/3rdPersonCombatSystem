@@ -110,14 +110,15 @@ namespace CombatSystem.StateMachine
 
         public void RemoveTransition(State startState, State endState)
         {
+            Undo.RecordObject(startState, "(State Machine) Transition Removed");
             StateTransition transition = startState.GetTransition(endState);
 
             if(transition != null)
             {
-                Undo.RecordObject(startState, "(State Machine) Transition Removed");
                 startState.GetTransitions().Remove(transition);
-                EditorUtility.SetDirty(startState);
             }
+
+            EditorUtility.SetDirty(startState);
         }
 #endif
 
