@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using System;
 
 namespace CombatSystem.StateMachine.Editor
 {
@@ -12,6 +13,9 @@ namespace CombatSystem.StateMachine.Editor
         State currentState;
         ScrollView actionListScrollView;
         ScrollView transitionListScrollView;
+        TextField nameTextField;
+        DropdownField actionsDropdown;
+        Button addActionButton;
 
         public StateInspector() 
         { 
@@ -22,18 +26,64 @@ namespace CombatSystem.StateMachine.Editor
             styleSheets.Add(styleSheet);
 
             transitionListScrollView = this.Q<ScrollView>("transitionListScrollView");
+
             actionListScrollView = this.Q<ScrollView>("actionListScrollView");
+
+            nameTextField = this.Q<TextField>("nameTextField");
+
+            actionsDropdown = this.Q<DropdownField>("actionsDropdown");
+            actionsDropdown.choices.Clear();
+            actionsDropdown.value = "";
+
+            addActionButton = this.Q<Button>("addActionButton");
+            addActionButton.clicked += AddAction;
         }
 
         public void UpdateSelection(StateItem stateItem)
         {
             currentState = stateItem.GetState();
 
-            DisplayActions();
-            DisplayTransitions();
+            SetName();
+            SetActionsDropdown();
+            SetActions();
+            SetTransitions();
         }
 
-        private void DisplayActions()
+        private void SetName()
+        {
+            nameTextField.value = currentState.stateName;
+            nameTextField.RegisterValueChangedCallback(OnNameTextChanged);
+        }
+
+        private void SetActionsDropdown()
+        {
+            var actionTypes = TypeCache.GetTypesDerivedFrom(typeof(StateAction));
+
+            actionsDropdown.choices.Clear();
+
+            foreach(var actionType in actionTypes)
+            {
+                actionsDropdown.choices.Add(actionType.Name);
+            }
+        }
+
+        private void AddAction()
+        {
+            if(actionsDropdown.value == "")
+            {
+                return;
+            }
+
+            string typeName = $"CombatSystem.StateMachine.Actions.{actionsDropdown.value},Assembly-CSharp";
+            Type actionType = Type.GetType(typeName, true);
+
+            if(actionType != null)
+            {
+                currentState.CreateAction(actionType);
+            }
+        }
+
+        private void SetActions()
         {
             actionListScrollView.Clear();
 
@@ -41,7 +91,7 @@ namespace CombatSystem.StateMachine.Editor
 
             if(actions.Count == 0)
             {
-                AddToScrollView(actionListScrollView, "No actions");
+                AddToScrollView(actionListScrollView, "List is Empty");
                 return;
             }
 
@@ -51,7 +101,7 @@ namespace CombatSystem.StateMachine.Editor
             });
         }
 
-        private void DisplayTransitions()
+        private void SetTransitions()
         {
             transitionListScrollView.Clear();
 
@@ -59,7 +109,7 @@ namespace CombatSystem.StateMachine.Editor
 
             if(transitions.Count == 0)
             {
-                AddToScrollView(transitionListScrollView, "No transitions");
+                AddToScrollView(transitionListScrollView, "List is Empty");
                 return;
             }
 
@@ -73,6 +123,11 @@ namespace CombatSystem.StateMachine.Editor
         {
             Label transitionLabel = new Label(text);
             scrollView.Add(transitionLabel);
+        }
+
+        private void OnNameTextChanged(ChangeEvent<string> evt)
+        {
+            currentState.stateName = evt.newValue;
         }
     }
 }

@@ -61,19 +61,30 @@ namespace CombatSystem.StateMachine.Editor
 
             if(elementsToRemove != null)
             {
-                if(ContainsType(elementsToRemove, typeof(StateEdge)) && !ContainsType(elementsToRemove, typeof(StateItem)))
+                List<GraphElement> elementsCache = new List<GraphElement>(elementsToRemove);
+
+                elementsCache.ForEach(element =>
                 {
-                    RemoveTransitions(elementsToRemove);
-                }
-                else if(!ContainsType(elementsToRemove, typeof(StateEdge)) && ContainsType(elementsToRemove, typeof(StateItem)))
-                {
-                    RemoveStatesWithTransitions(elementsToRemove);
-                }
-                else if(ContainsType(elementsToRemove, typeof(StateEdge)) && ContainsType(elementsToRemove, typeof(StateItem)))
-                {
-                    RemoveTransitions(elementsToRemove);
-                    RemoveStates(elementsToRemove);
-                }
+                    StateEdge stateEdge = element as StateEdge;
+
+                    if(stateEdge != null)
+                    {
+                        StateItem startItem = stateEdge.output.node as StateItem;
+                        StateItem endItem = stateEdge.input.node as StateItem;
+                        State startState = startItem.GetState();
+                        State endState = endItem.GetState();
+
+                        startState.RemoveTransition(endState);
+                    }
+
+                    StateItem stateItem = element as StateItem;
+                
+                    if(stateItem != null)
+                    {
+                        stateItem.Query<Port>().ForEach(port => elementsToRemove.AddRange(port.connections));
+                        stateMachine.RemoveState(stateItem.GetState());
+                    }
+                });
             }
 
             return graphViewChange;
@@ -87,77 +98,14 @@ namespace CombatSystem.StateMachine.Editor
             {
                 StateItem startItem = edge.output.node as StateItem;
                 StateItem endItem = edge.input.node as StateItem;
+                State startState = startItem.GetState();
+                State endState = endItem.GetState();
 
-                if(stateMachine.CreateTransition(startItem.GetState(), endItem.GetState()) == null)
+                if(startState.CreateTransition(endState) == null)
                 {
                     edgesToCreate.Remove(edge);
                 }
             });
-        }
-
-        private void RemoveStates(List<GraphElement> elementsToRemove)
-        {
-            List<GraphElement> elementsCache = new List<GraphElement>(elementsToRemove);
-
-            elementsCache.ForEach(element =>
-            {
-                StateItem stateItem = element as StateItem;
-                
-                if(stateItem != null)
-                {
-                    stateItem.Query<Port>().ForEach(port => elementsToRemove.AddRange(port.connections));
-                    stateMachine.RemoveState(stateItem.GetState());
-                }
-            });
-        }
-
-        private void RemoveTransitions(List<GraphElement> elementsToRemove)
-        {
-            elementsToRemove.ForEach(element => 
-            {
-                StateEdge stateEdge = element as StateEdge;
-
-                if(stateEdge != null)
-                {
-                    StateItem startItem = stateEdge.output.node as StateItem;
-                    StateItem endItem = stateEdge.input.node as StateItem;
-
-                    stateMachine.RemoveTransition(startItem.GetState(), endItem.GetState());
-                }
-            });
-        }
-
-        private void RemoveStatesWithTransitions(List<GraphElement> elementsToRemove)
-        {
-            List<GraphElement> elementsCache = new List<GraphElement>(elementsToRemove);
-
-            elementsCache.ForEach(element =>
-            {
-                StateItem stateItem = element as StateItem;
-                
-                if(stateItem != null)
-                {
-                    stateItem.Query<Port>().ForEach(port => elementsToRemove.AddRange(port.connections));
-                    stateMachine.RemoveStateWithTransitions(stateItem.GetState());
-                }
-            });
-        }
-
-        private bool ContainsType(List<GraphElement> elementsToRemove, Type type)
-        {
-            List<Type> removedElementTypes = new List<Type>();
-
-            elementsToRemove.ForEach(element => 
-            {
-                Type elementType = element.GetType();
-                
-                if(!removedElementTypes.Contains(elementType))
-                {
-                    removedElementTypes.Add(elementType);
-                }
-            });
-
-            return removedElementTypes.Contains(type);
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)

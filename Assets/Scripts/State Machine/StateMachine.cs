@@ -1,41 +1,48 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using UnityEditor;
 using UnityEngine;
 
 namespace CombatSystem.StateMachine
 {
     [CreateAssetMenu(menuName = "State Machine/New State Machine")]
-    public class StateMachine : ScriptableObject
+    public class StateMachine : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField] State initialState;
         [SerializeField] State currentState;
         [SerializeField] AnyState anyState;
         [SerializeField] List<State> states = new List<State>();
-        Dictionary<State, State> cloneLookup = new Dictionary<State, State>();
-        Dictionary<State, bool> visited = new Dictionary<State, bool>();
-        Queue<State> explored = new Queue<State>();
+        Dictionary<string, State> stateLookup = new Dictionary<string, State>();
 
         public List<State> GetStates()
         {   
-            return states;
+            List<State> allStates = new List<State>();
+
+            states.ForEach(state =>
+            {
+                if(stateLookup.ContainsKey(state.name))
+                {
+                    allStates.Add(state);
+                }
+            });
+
+            return allStates;
         }
 
         public void Enter()
         {
-            if (anyState != null)
+            if(anyState != null)
             {
                 anyState.Subscribe();
             }
 
-            SwitchState(initialState);
+            SwitchState(initialState.name);
         }
 
-        public void SwitchState(State newState)
+        public void SwitchState(string newStateName)
         {
             currentState?.Exit();
-            currentState = cloneLookup[newState];
+            currentState = stateLookup[newStateName];
         }
 
         public void Tick()
@@ -45,9 +52,9 @@ namespace CombatSystem.StateMachine
 
         public void Bind(StateController controller)
         {
-            Traverse(state => 
+            states.ForEach(state => 
             {
-                cloneLookup[state].Bind(controller);
+                state.Bind(controller);
             });
 
             anyState.Bind(controller);
@@ -57,141 +64,88 @@ namespace CombatSystem.StateMachine
 #if UNITY_EDITOR
         public State CreateState()
         {
-            State state = CreateInstance<State>();
-            state.name = Guid.NewGuid().ToString();
+            State newState = CreateInstance<State>();
+            newState.name = Guid.NewGuid().ToString();
 
-            Undo.RecordObject(this, "(State Machine) State Created");
-            states.Add(state);
+            Undo.RegisterCreatedObjectUndo(newState, "(State Machine) State Created");
+            Undo.RecordObject(this, "(State Machine) State Added");
 
-            AssetDatabase.AddObjectToAsset(state, this);
-            AssetDatabase.SaveAssets();
+            states.Add(newState);
 
-            return state;
+            return newState;
         }
 
-        public StateTransition CreateTransition(State startState, State endState)
-        {
-            if(startState.GetTransition(endState) != null)
-            {
-                return null;
-            }
-            
-            StateTransition transition = new StateTransition();
-            Undo.RecordObject(startState, "(State Machine) Transition Created");
-
-            transition.SetTrueState(endState);
-            startState.GetTransitions().Add(transition);
-
-            EditorUtility.SetDirty(startState);
-            return transition;
-        }
-
-        public void RemoveState(State state)
-        {
-            Debug.Log("Removing state");
-            Undo.RecordObject(this, "(State Machine) State Removed");
-            states.Remove(state);
-            EditorUtility.SetDirty(this);
-            AssetDatabase.SaveAssets();
-        }
-
-        public void RemoveStateWithTransitions(State state)
+        public void RemoveState(State stateToDelete)
         {
             Undo.RecordObject(this, "(State Machine) State Removed");
+            states.Remove(stateToDelete);
 
-            states.ForEach(candidate =>
+            CleanDanglingTransitions(stateToDelete);
+
+            Undo.DestroyObjectImmediate(stateToDelete);
+        }
+
+        private void CleanDanglingTransitions(State stateToDelete)
+        {
+            states.ForEach(state =>
             {
-                RemoveTransition(candidate, state);
+                state.RemoveTransition(stateToDelete);
             });
-
-            states.Remove(state);
-            Undo.DestroyObjectImmediate(state);
-            AssetDatabase.SaveAssets();
         }
 
-        public void RemoveTransition(State startState, State endState)
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            StateTransition transition = startState.GetTransition(endState);
-
-            if(transition != null)
+            if(AssetDatabase.GetAssetPath(this) != "")
             {
-                Undo.RecordObject(startState, "(State Machine) Transition Removed");
-                startState.GetTransitions().Remove(transition);
-                EditorUtility.SetDirty(startState);
+                states.ForEach(state =>
+                {
+                    if(AssetDatabase.GetAssetPath(state) == "")
+                    {
+                        AssetDatabase.AddObjectToAsset(state, this);
+                    }
+                });
             }
         }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() { }
 #endif
 
         public StateMachine Clone()
         {
             StateMachine clone = Instantiate(this);
 
-            if (anyState != null)
+            if(anyState != null)
             {
                 clone.anyState = anyState.Clone();
             }
  
             clone.states = new List<State>();
+            clone.stateLookup = new Dictionary<string, State>();
 
-            Traverse((state) => 
+            states.ForEach((state) => 
             {
-                clone.cloneLookup[state] = state.Clone();
-                clone.states.Add(clone.cloneLookup[state]);
+                clone.stateLookup[state.name] = state.Clone();
+                clone.states.Add(clone.stateLookup[state.name]);
             });
 
             return clone;
         }
 
-        private void Traverse(Action<State> visiter)
+        private void Awake()
         {
-            visited.Clear();
-            explored.Clear();
-
-            explored.Enqueue(initialState);
-
-            while (explored.Count > 0)
-            {
-                Visit(visiter);
-            }
-
-            if (anyState != null)
-            {
-                VisitAnyState(visiter);
-            }
+            OnValidate();
         }
 
-        private void Visit(Action<State> visiter)
+        private void OnValidate()
         {
-            State current = explored.Dequeue();
+            stateLookup.Clear();
 
-            current.GetTransitions().ForEach(transition =>
+            states.ForEach(state =>
             {
-                State neighbour = transition.GetTrueState();
-
-                if (!visited.ContainsKey(neighbour))
+                if(state != null)
                 {
-                    explored.Enqueue(neighbour);
+                    stateLookup[state.name] = state;
                 }
-            });
-
-            SetAsVisited(visiter, current);
-        }
-
-        private void SetAsVisited(Action<State> visiter, State current)
-        {
-            if (!visited.ContainsKey(current))
-            {
-                visited[current] = true;
-                visiter.Invoke(current);
-            }
-        }
-
-        private void VisitAnyState(Action<State> visiter)
-        {
-            anyState.GetTransitions().ForEach(transition =>
-            {
-                State current = transition.GetTrueState();
-                SetAsVisited(visiter, current);
             });
         }
     }

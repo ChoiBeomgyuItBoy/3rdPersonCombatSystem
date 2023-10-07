@@ -3,7 +3,7 @@ using UnityEngine;
 namespace CombatSystem.StateMachine
 {
     [System.Serializable]
-    public class StateTransition
+    public class StateTransition 
     {
         [SerializeField] StateCondition condition;
         [SerializeField] State trueState;

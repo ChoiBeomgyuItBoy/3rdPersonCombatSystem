@@ -6,9 +6,9 @@ namespace CombatSystem.StateMachine
     {
         [SerializeField] StateMachine stateMachine;
 
-        public void SwitchState(State newState)
+        public void SwitchState(string newStateName)
         {
-            stateMachine.SwitchState(newState);
+            stateMachine.SwitchState(newStateName);
         }
 
         private void Start()

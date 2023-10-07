@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace CombatSystem.StateMachine
@@ -30,15 +31,61 @@ namespace CombatSystem.StateMachine
             return transitions;
         }
 
-        public StateTransition GetTransition(State trueState)
-        {
-            return transitions.SingleOrDefault(transition => transition.GetTrueState() == trueState);
-        }
-
+#if UNITY_EDITOR
         public void SetPosition(Vector2 position)
         {
+            Undo.RecordObject(this, "State Moved");
             this.position = position;
+            EditorUtility.SetDirty(this);
         }
+
+        public StateTransition CreateTransition(State endState)
+        {
+            if(HasTransitionTo(endState))
+            {
+                Debug.Log("Has transition");
+                return null;
+            }
+            
+            StateTransition transition = new StateTransition();
+            Undo.RecordObject(this, "Transition Added");
+
+            transition.SetTrueState(endState);
+            transitions.Add(transition);
+
+            EditorUtility.SetDirty(this);
+
+            return transition;
+        }
+
+        public void RemoveTransition(State endState)
+        {
+            StateTransition transition = GetTransition(endState);
+
+            if(transition != null)
+            {
+                Undo.RecordObject(this, "Transition Removed");
+                transitions.Remove(transition);
+                EditorUtility.SetDirty(this);
+            }
+        }
+
+        public StateAction CreateAction(Type type)
+        {   
+            StateAction action = CreateInstance(type) as StateAction;
+            action.name = type.Name;
+
+            Undo.RegisterCreatedObjectUndo(action, "Action Created");
+            Undo.RecordObject(this, "Action Added");
+
+            actions.Add(action);
+
+            AssetDatabase.AddObjectToAsset(action, this);
+            EditorUtility.SetDirty(this);
+
+            return action;
+        }
+#endif
 
         public void Tick()
         {
@@ -80,10 +127,20 @@ namespace CombatSystem.StateMachine
             {
                 if(transition.Check())
                 {
-                    controller.SwitchState(transition.GetTrueState());
+                    controller.SwitchState(transition.GetTrueState().name);
                     return;
                 }
             });
+        }
+
+        private StateTransition GetTransition(State trueState)
+        {
+            return transitions.SingleOrDefault(transition => transition.GetTrueState() == trueState);
+        }
+
+        private bool HasTransitionTo(State trueState)
+        {
+            return GetTransition(trueState) != null;
         }
     }
 }

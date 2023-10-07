@@ -25,13 +25,13 @@ namespace CombatSystem.StateMachine
                 if(triggerEvent is UnityEvent)
                 {
                     UnityEvent trigger = triggerEvent as UnityEvent;
-                    trigger.AddListener(() => controller.SwitchState(trueState));
+                    trigger.AddListener(() => controller.SwitchState(trueState.name));
                 }
 
                 if(triggerEvent is UnityEvent<float>)
                 {
                     UnityEvent<float> trigger = triggerEvent as UnityEvent<float>;
-                    trigger.AddListener((value) => controller.SwitchState(trueState));
+                    trigger.AddListener((value) => controller.SwitchState(trueState.name));
                 }
             });
         }

@@ -51,9 +51,7 @@ namespace CombatSystem.StateMachine.Editor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
-            Undo.RecordObject(state,"(State Machine) Set Position");
             state.SetPosition(new Vector2(newPos.x, newPos.y));
-            EditorUtility.SetDirty(state);
         }
 
         public override void OnSelected()
