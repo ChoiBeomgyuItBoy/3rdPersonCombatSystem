@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="actionContainer" style="margin-left: 3%; margin-right: 5%; margin-top: 0.5%; margin-bottom: 0.5%; flex-direction: row; justify-content: flex-start;">
+        <ui:Label tabindex="-1" text="Test Action" display-tooltip-when-elided="true" name="actionName" style="width: 70%; padding-top: 2px; padding-bottom: 2px;" />
+        <ui:Button tabindex="-1" text="Edit" display-tooltip-when-elided="true" name="editActionButton" style="width: 20%;" />
+        <ui:Button tabindex="-1" text="-" display-tooltip-when-elided="true" name="removeActionButton" style="width: 10%; background-color: rgb(209, 76, 76);" />
+    </ui:VisualElement>
+</ui:UXML>

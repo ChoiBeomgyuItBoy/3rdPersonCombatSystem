@@ -57,7 +57,6 @@ namespace CombatSystem.StateMachine.Editor
         public override void OnSelected()
         {
             base.OnSelected();
-            Selection.activeObject = state;
             onStateSelected?.Invoke(this);
         }
 

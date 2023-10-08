@@ -99,7 +99,7 @@ namespace CombatSystem.StateMachine
             {
                 states.ForEach(state =>
                 {
-                    if(AssetDatabase.GetAssetPath(state) == "")
+                    if(AssetDatabase.GetAssetPath(state) == "" && !Application.isPlaying)
                     {
                         AssetDatabase.AddObjectToAsset(state, this);
                     }

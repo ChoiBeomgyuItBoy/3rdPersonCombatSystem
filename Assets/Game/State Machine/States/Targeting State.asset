@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Targeting State
   m_EditorClassIdentifier: 
   stateName: Targeting State
-  position: {x: 478, y: 306}
+  position: {x: 492, y: 341.96}
   actions:
   - {fileID: 11400000, guid: 931dde923e602784a840f4f452eae308, type: 2}
   - {fileID: 11400000, guid: 15e6b42887955094685b8ce9919a1324, type: 2}

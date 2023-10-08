@@ -6,8 +6,8 @@
     <ui:VisualElement name="AddingActions" class="container">
         <ui:Label tabindex="-1" text="Add New Action" display-tooltip-when-elided="true" name="addingActionsLabel" class="header" style="-unity-text-align: upper-center;" />
         <ui:VisualElement name="addActionContainer" style="flex-direction: row;">
-            <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="actionsDropdown" style="width: 80%;" />
-            <ui:Button tabindex="-1" text="Add" display-tooltip-when-elided="true" name="addActionButton" style="width: 20%;" />
+            <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="actionsDropdown" style="width: 90%;" />
+            <ui:Button tabindex="-1" text="+" display-tooltip-when-elided="true" name="addActionButton" style="width: 10%; background-color: rgba(81, 126, 81, 255);" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="DisplayingActions" class="container">

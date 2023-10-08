@@ -14,6 +14,7 @@ namespace CombatSystem.StateMachine
         [SerializeField] List<StateAction> actions = new List<StateAction>();
         [SerializeField] List<StateTransition> transitions = new List<StateTransition>();
         StateController controller;
+        public event Action onChange;
         public event Action onExit;
 
         public Vector2 GetPosition()
@@ -43,7 +44,6 @@ namespace CombatSystem.StateMachine
         {
             if(HasTransitionTo(endState))
             {
-                Debug.Log("Has transition");
                 return null;
             }
             
@@ -54,6 +54,7 @@ namespace CombatSystem.StateMachine
             transitions.Add(transition);
 
             EditorUtility.SetDirty(this);
+            onChange?.Invoke();
 
             return transition;
         }
@@ -67,6 +68,7 @@ namespace CombatSystem.StateMachine
                 Undo.RecordObject(this, "Transition Removed");
                 transitions.Remove(transition);
                 EditorUtility.SetDirty(this);
+                onChange?.Invoke();
             }
         }
 
@@ -82,8 +84,17 @@ namespace CombatSystem.StateMachine
 
             AssetDatabase.AddObjectToAsset(action, this);
             EditorUtility.SetDirty(this);
+            onChange?.Invoke();
 
             return action;
+        }
+
+        public void RemoveAction(StateAction action)
+        {
+            Undo.RecordObject(this, "Action Removed");
+            actions.Remove(action);
+            EditorUtility.SetDirty(this);
+            onChange?.Invoke();
         }
 #endif
 

@@ -9,7 +9,6 @@ namespace CombatSystem.StateMachine.Editor
     public class StateInspector : VisualElement
     {
         public new class UxmlFactory : UxmlFactory<StateInspector, UxmlTraits> { }
-
         State currentState;
         ScrollView actionListScrollView;
         ScrollView transitionListScrollView;
@@ -37,12 +36,29 @@ namespace CombatSystem.StateMachine.Editor
 
             addActionButton = this.Q<Button>("addActionButton");
             addActionButton.clicked += AddAction;
+
+            Undo.undoRedoPerformed += Refresh;
         }
 
-        public void UpdateSelection(StateItem stateItem)
+        public void UpdateSelection(State state)
         {
-            currentState = stateItem.GetState();
+            if(currentState != null)
+            {
+                currentState.onChange -= Refresh;
+            }
 
+            currentState = state;
+
+            if(currentState != null)
+            {
+                currentState.onChange += Refresh;
+            }
+
+            Refresh();
+        }
+
+        private void Refresh()
+        {
             SetName();
             SetActionsDropdown();
             SetActions();
@@ -67,6 +83,21 @@ namespace CombatSystem.StateMachine.Editor
             }
         }
 
+        private void SetActions()
+        {
+            actionListScrollView.Clear();
+
+            List<StateAction> actions = currentState.GetActions();
+
+            if(actions.Count == 0)
+            {
+                actionListScrollView.Add(GetStyledLabel("List is Empty"));
+                return;
+            }
+
+            actions.ForEach(action => CreateActionItem(action));
+        }
+
         private void AddAction()
         {
             if(actionsDropdown.value == "")
@@ -80,25 +111,26 @@ namespace CombatSystem.StateMachine.Editor
             if(actionType != null)
             {
                 currentState.CreateAction(actionType);
+                SetActions();
             }
         }
 
-        private void SetActions()
+        private void CreateActionItem(StateAction action)
         {
-            actionListScrollView.Clear();
+            ActionItem actionItem = new ActionItem(action);
+            actionItem.GetRemoveActionButton().clicked += () => RemoveAction(action);
+            actionItem.GetEditActionButton().clicked += () => SelectAction(action);
+            actionListScrollView.Add(actionItem);
+        }
 
-            List<StateAction> actions = currentState.GetActions();
+        private void RemoveAction(StateAction action)
+        {
+            currentState.RemoveAction(action);
+        }
 
-            if(actions.Count == 0)
-            {
-                AddToScrollView(actionListScrollView, "List is Empty");
-                return;
-            }
-
-            actions.ForEach(action =>
-            {
-                AddToScrollView(actionListScrollView, $"{action.name}");
-            });
+        private void SelectAction(StateAction action)
+        {
+            Selection.activeObject = action;
         }
 
         private void SetTransitions()
@@ -109,20 +141,32 @@ namespace CombatSystem.StateMachine.Editor
 
             if(transitions.Count == 0)
             {
-                AddToScrollView(transitionListScrollView, "List is Empty");
+                AddTransitionText("List is Empty");
                 return;
             }
 
             transitions.ForEach(transition =>
             {
-                AddToScrollView(transitionListScrollView, $"{currentState.stateName} -> {transition.GetTrueState().stateName}");
+                AddTransitionText($"{currentState.stateName} -> {transition.GetTrueState().stateName}");
             });
         }
 
-        private void AddToScrollView(ScrollView scrollView, string text)
+        private void AddTransitionText(string text)
+        {
+            Label transitionLabel = GetStyledLabel(text);
+            transitionListScrollView.Add(transitionLabel);
+        }
+
+        private Label GetStyledLabel(string text)
         {
             Label transitionLabel = new Label(text);
-            scrollView.Add(transitionLabel);
+
+            transitionLabel.style.paddingLeft = new StyleLength(new Length(3, LengthUnit.Percent));
+            transitionLabel.style.paddingRight = new StyleLength(new Length(3, LengthUnit.Percent));
+            transitionLabel.style.paddingTop = new StyleLength(new Length(1, LengthUnit.Percent));
+            transitionLabel.style.paddingBottom = new StyleLength(new Length(1, LengthUnit.Percent));
+
+            return transitionLabel;
         }
 
         private void OnNameTextChanged(ChangeEvent<string> evt)

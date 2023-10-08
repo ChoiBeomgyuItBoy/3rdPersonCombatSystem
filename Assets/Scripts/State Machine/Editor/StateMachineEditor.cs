@@ -63,7 +63,7 @@ namespace CombatSystem.StateMachine.Editor
 
         private void OnStateSelectionChange(StateItem stateItem)
         {
-            stateInspector.UpdateSelection(stateItem);
+            stateInspector.UpdateSelection(stateItem.GetState());
         }
     }
 }

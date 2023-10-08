@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Select Target State
   m_EditorClassIdentifier: 
   stateName: Select Target State
-  position: {x: 97, y: 302}
+  position: {x: 54, y: 340.3541}
   actions:
   - {fileID: 11400000, guid: 2ca1d187a2be6824bba73552a219d53d, type: 2}
   transitions:

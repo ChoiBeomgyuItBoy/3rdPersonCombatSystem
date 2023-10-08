@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Free Look State
   m_EditorClassIdentifier: 
   stateName: Free Look State
-  position: {x: 103, y: 49}
+  position: {x: 45.949997, y: 55.00002}
   actions:
   - {fileID: 11400000, guid: 80585179f5ae22941a052dc94a8ddac3, type: 2}
-  - {fileID: 11400000, guid: 2ca1d187a2be6824bba73552a219d53d, type: 2}
   - {fileID: 11400000, guid: ff093d5d462501d48a647004e870e3a9, type: 2}
-  - {fileID: 11400000, guid: e31fc4aaad612644d8807c9cd877b891, type: 2}
+  - {fileID: 11400000, guid: 2ca1d187a2be6824bba73552a219d53d, type: 2}
   transitions:
   - condition:
       and:
