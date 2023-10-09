@@ -4,6 +4,7 @@ namespace CombatSystem.StateMachine
 {
     public abstract class StateAction : ScriptableObject
     {
+        public string description = "";
         protected StateController controller;
         protected State caller;
         bool started = false;

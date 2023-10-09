@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System;
+using System.Text.RegularExpressions;
 
 namespace CombatSystem.StateMachine.Editor
 {
@@ -79,7 +80,8 @@ namespace CombatSystem.StateMachine.Editor
 
             foreach(var actionType in actionTypes)
             {
-                actionsDropdown.choices.Add(actionType.Name);
+                string formattedType = Regex.Replace(actionType.Name, @"([a-z])([A-Z0-9])", "$1 $2");
+                actionsDropdown.choices.Add(formattedType);
             }
         }
 

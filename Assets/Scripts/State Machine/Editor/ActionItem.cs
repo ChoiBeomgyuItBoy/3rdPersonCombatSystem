@@ -1,4 +1,6 @@
+using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace CombatSystem.StateMachine.Editor
@@ -18,7 +20,10 @@ namespace CombatSystem.StateMachine.Editor
             editActionButton = this.Q<Button>("editActionButton");
             removeActionButton = this.Q<Button>("removeActionButton");
 
-            actionName.text = action.name;
+            string formattedName = Regex.Replace(action.name, @"([a-z])([A-Z0-9])", "$1 $2");
+            action.description = formattedName;
+            actionName.bindingPath = "description";
+            actionName.Bind(new SerializedObject(action));
         }
 
         public Button GetEditActionButton()

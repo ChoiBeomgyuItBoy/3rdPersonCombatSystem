@@ -7,7 +7,7 @@ using UnityEngine;
 namespace CombatSystem.StateMachine
 {
     [CreateAssetMenu(menuName = "State Machine/New State")]
-    public class State : ScriptableObject
+    public class State : ScriptableObject, ISerializationCallbackReceiver
     {
         public string stateName = "New State";
         [SerializeField] Vector2 position = Vector2.zero;
@@ -82,7 +82,6 @@ namespace CombatSystem.StateMachine
 
             actions.Add(action);
 
-            AssetDatabase.AddObjectToAsset(action, this);
             EditorUtility.SetDirty(this);
             onChange?.Invoke();
 
@@ -93,9 +92,26 @@ namespace CombatSystem.StateMachine
         {
             Undo.RecordObject(this, "Action Removed");
             actions.Remove(action);
+            Undo.DestroyObjectImmediate(action);
             EditorUtility.SetDirty(this);
             onChange?.Invoke();
         }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            if(AssetDatabase.GetAssetPath(this) != "")
+            {
+                actions.ForEach(action =>
+                {
+                    if(AssetDatabase.GetAssetPath(action) == "" && !Application.isPlaying)
+                    {
+                        AssetDatabase.AddObjectToAsset(action, this);
+                    }
+                });
+            }
+        }   
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize() { }
 #endif
 
         public void Tick()

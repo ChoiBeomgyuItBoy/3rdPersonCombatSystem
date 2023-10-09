@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 26e7aef5-e2a3-4fe9-bf15-ae69bd45f972
   m_EditorClassIdentifier: 
   stateName: B
-  position: {x: 584.00006, y: -91}
+  position: {x: 631.9999, y: -59.000126}
   actions:
   - {fileID: -3672044579004268972}
   - {fileID: -3632959039175718318}
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 3575ddf7-f556-4a30-9f1b-c2d82d2da649
   m_EditorClassIdentifier: 
   stateName: New State
-  position: {x: 695, y: -284}
+  position: {x: 695, y: -283.99997}
   actions:
   - {fileID: -6047759423216246412}
   transitions:
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 509f2464-43d7-4e2e-9cc2-40c92730ad79
   m_EditorClassIdentifier: 
   stateName: New State
-  position: {x: 893, y: -471.79803}
+  position: {x: 893.00006, y: -501.39307}
   actions:
   - {fileID: -861433370447155920}
   transitions:
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: 570bc7a2-004c-4466-9065-7a7e42139628
   m_EditorClassIdentifier: 
   stateName: New State
-  position: {x: 845, y: -4}
+  position: {x: 860.99994, y: -10.999993}
   actions:
   - {fileID: 1988722396709871768}
   - {fileID: -5376492053552458390}
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Name: 34202283-b8a9-4e1d-ad33-04b849051002
   m_EditorClassIdentifier: 
   stateName: A
-  position: {x: 491.00012, y: 44.00001}
+  position: {x: 521, y: 130.251}
   actions:
   - {fileID: 5687770314322074980}
   - {fileID: 5157280518609260570}
@@ -436,7 +436,7 @@ MonoBehaviour:
   m_Name: 4a87bf99-aca1-4d1d-9eff-b093109d085e
   m_EditorClassIdentifier: 
   stateName: New State
-  position: {x: 939.5009, y: -154.99997}
+  position: {x: 956, y: -139}
   actions: []
   transitions:
   - condition:
